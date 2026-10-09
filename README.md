@@ -53,7 +53,7 @@ python -m lookout ui              # the app, in your browser at http://127.0.0.1
 
 **Live demo (read-only):** the three processed test days, in the real app UI, at https://hassan-2050.github.io/lake-lookout/ once GitHub Pages is on (see below).
 
-**[Watch the narrated demo](docs/post/lake-lookout-demo.mp4)** (98 s: the real app and model on the Hunza test day; the voice is Kokoro-82M, an open-weight text-to-speech model run locally) ·
+**[Watch the narrated demo on YouTube](https://youtu.be/1rj782juY7c)** ([MP4](docs/post/lake-lookout-demo.mp4), [captions](docs/post/lake-lookout-demo.srt)) (98 s: the real app and model on the Hunza test day; the voice is Kokoro-82M, an open-weight text-to-speech model run locally) ·
 more: [the whole day](docs/screenshots/04-result.jpg) · [phone](docs/screenshots/06-phone.jpg) · [dark mode](docs/screenshots/07-dark.jpg)
 
 **The app** runs entirely on your computer and answers only requests from this

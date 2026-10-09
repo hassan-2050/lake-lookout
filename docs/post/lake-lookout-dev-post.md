@@ -75,7 +75,7 @@ safe" is worse than no app at all.
 
 ## Demo
 
-{% embed [YOUR_YOUTUBE_OR_LOOM_URL] %}
+{% embed https://youtu.be/1rj782juY7c %}
 
 *The demo is the real app and the real local model. To show a realistic day, it
 uses a test day I assembled from freely licensed Wikimedia photos of Hunza,
