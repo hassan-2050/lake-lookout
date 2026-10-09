@@ -185,7 +185,7 @@ lookout/        ingest (EXIF time/GPS, memo times, grouping), audio (ffmpeg),
 eval/           photos + ATTRIBUTION.md, labels.json, run_eval.py, results/
 tools/          make_synthetic_day.py, check_trip_page.mjs
 trips/          synthetic-day/ (test data, labelled as such)
-tests/          46 tests: python -m pytest
+tests/          49 tests: python -m pytest
 ```
 
 `node tools/check_trip_page.mjs <out-dir>` checks a generated page against its
