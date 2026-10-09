@@ -1,8 +1,6 @@
 # Lake Lookout
 
-**Hike with your phone. At each lake, take a photo and say what you see.
-That evening, with no internet, a local open-weight model turns the day into a
-glacial-lake field log.**
+**Hike with your phone. At each lake, take a photo and say what you see. That evening, with no internet, a local open-weight model turns the day into a glacial-lake field log.**
 
 On the trail the screen stays in your pocket. You use your phone's own camera
 and voice recorder. Back at the teahouse, campsite or home, Lake Lookout reads
