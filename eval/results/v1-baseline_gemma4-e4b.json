@@ -2,14 +2,14 @@
  "model": "gemma4:e4b",
  "cpu_only": false,
  "counts": {
-  "scored": 91,
-  "correct": 68,
+  "scored": 89,
+  "correct": 66,
   "false_yes": 3,
   "false_no": 4,
   "too_cautious": 16,
   "rejected": 14
  },
- "accuracy": 0.747,
+ "accuracy": 0.742,
  "latency_s": {
   "total": 1.42,
   "prompt": 0.15,
@@ -210,7 +210,7 @@
      "evidence": "unclear"
     },
     "downstream_people": {
-     "label": "yes",
+     "label": "skip",
      "answer": "yes",
      "evidence": "people standing near the lake shore"
     }
@@ -240,7 +240,7 @@
      "evidence": "glacier ice visible above the lake"
     },
     "glacier_contact": {
-     "label": "unclear",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "none"
     },
@@ -861,5 +861,6 @@
    }
   }
  },
- "labels_reviewed_by_human": false
+ "labels_reviewed_by_human": false,
+ "labels_second_pass": "2026-10-10"
 }

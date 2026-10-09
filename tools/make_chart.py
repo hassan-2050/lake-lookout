@@ -34,7 +34,8 @@ def load() -> list[dict]:
     for stem, name in VERSIONS:
         r = json.loads((RESULTS / f"{stem}_gemma4-e4b.json").read_text(encoding="utf-8"))
         rows.append({"v": stem.split("-")[0], "name": name,
-                     "false_no": r["counts"]["false_no"], "acc": round(r["accuracy"] * 100)})
+                     "false_no": r["counts"]["false_no"], "acc": round(r["accuracy"] * 100),
+                     "scored": r["counts"]["scored"]})
     return rows
 
 
@@ -81,11 +82,11 @@ def main() -> int:
       p{{margin:0 0 14px;font-size:13.5px;color:{INK2};max-width:1040px;line-height:1.45}}
       .foot{{font-size:11.5px;color:{MUTED};margin:6px 0 0}}</style></head><body><div class="wrap">
       <h1>Five measured versions of the checklist</h1>
-      <p>gemma4:e4b on 11 labelled lake photos, 91 scored answers per version. Putting evidence first ended
+      <p>gemma4:e4b on 11 labelled lake photos, {rows[0]['scored']} scored answers per version. Putting evidence first ended
          unsupported answers, then made the model claim absence for things out of view, until the
          in-view questions in v3.</p>
       <svg width="1100" height="300" viewBox="0 0 1100 300" font-family="system-ui,Segoe UI,sans-serif">{left}{right}</svg>
-      <p class="foot">Source: eval/results/ in the Lake Lookout repo. Small sample; a few points move between runs.</p>
+      <p class="foot">Source: eval/results/ in the Lake Lookout repo. Labels drafted and re-checked by a coding agent, not yet by a person. Small sample; a few points move between runs.</p>
     </div></body></html>"""
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)

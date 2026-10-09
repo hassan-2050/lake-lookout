@@ -2,15 +2,15 @@
  "model": "gemma4:e2b",
  "cpu_only": false,
  "counts": {
-  "scored": 91,
+  "scored": 89,
   "correct": 76,
   "false_yes": 1,
-  "false_no": 7,
-  "too_cautious": 7,
+  "false_no": 6,
+  "too_cautious": 6,
   "rejected": 22
  },
- "accuracy": 0.835,
- "scope_accuracy": 0.353,
+ "accuracy": 0.854,
+ "scope_accuracy": 0.4,
  "latency_s": {
   "total": 1.6,
   "prompt": 0.12,
@@ -233,7 +233,7 @@
      "evidence": "The slopes above the lake show signs of erosion and debris, but no distinct fresh rockfall scars are clearly visible."
     },
     "dam_in_view": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "The outlet or end of the lake where water flows out is not visible."
     },
@@ -258,12 +258,12 @@
      "evidence": "Not applicable, dam structure is not clearly visible."
     },
     "downstream_in_view": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "The area downstream of the lake outlet is not visible."
     },
     "downstream_people": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "Two people are visible near the shore in the foreground."
     }
@@ -299,7 +299,7 @@
      "evidence": "Glacier ice and bare moraine ridges are visible in the background."
     },
     "glacier_contact": {
-     "label": "unclear",
+     "label": "skip",
      "answer": "no",
      "evidence": "Glacier ice is visible in the background, but it does not appear to touch the water."
     },
@@ -1019,5 +1019,6 @@
    }
   }
  },
- "labels_reviewed_by_human": false
+ "labels_reviewed_by_human": false,
+ "labels_second_pass": "2026-10-10"
 }

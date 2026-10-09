@@ -2,15 +2,15 @@
  "model": "gemma3:4b",
  "cpu_only": false,
  "counts": {
-  "scored": 91,
-  "correct": 59,
-  "false_yes": 7,
+  "scored": 89,
+  "correct": 58,
+  "false_yes": 6,
   "false_no": 4,
   "too_cautious": 21,
   "rejected": 36
  },
- "accuracy": 0.648,
- "scope_accuracy": 0.294,
+ "accuracy": 0.652,
+ "scope_accuracy": 0.2,
  "latency_s": {
   "total": 33.02,
   "prompt": 0.31,
@@ -257,7 +257,7 @@
      "evidence": "No fresh rockfall or landslide scars are visible."
     },
     "dam_in_view": {
-     "label": "yes",
+     "label": "skip",
      "answer": "yes",
      "evidence": "The lake has an outlet, with a ridge visible at the end."
     },
@@ -282,12 +282,12 @@
      "evidence": "No seepage or breach channels are visible."
     },
     "downstream_in_view": {
-     "label": "yes",
+     "label": "skip",
      "answer": "yes",
      "evidence": "The land below the lake's outlet is visible."
     },
     "downstream_people": {
-     "label": "yes",
+     "label": "skip",
      "answer": "yes",
      "evidence": "A small settlement is visible downstream of the lake."
     }
@@ -317,7 +317,7 @@
      "evidence": "Large, snow-covered mountains with visible glacier ice are in the background."
     },
     "glacier_contact": {
-     "label": "unclear",
+     "label": "skip",
      "answer": "yes",
      "evidence": "The glacier appears to end very close to the lake."
     },
@@ -1085,5 +1085,6 @@
    }
   }
  },
- "labels_reviewed_by_human": false
+ "labels_reviewed_by_human": false,
+ "labels_second_pass": "2026-10-10"
 }

@@ -2,15 +2,15 @@
  "model": "gemma4:e4b",
  "cpu_only": false,
  "counts": {
-  "scored": 91,
+  "scored": 89,
   "correct": 75,
-  "false_yes": 5,
+  "false_yes": 4,
   "false_no": 5,
-  "too_cautious": 6,
+  "too_cautious": 5,
   "rejected": 24
  },
- "accuracy": 0.824,
- "scope_accuracy": 0.412,
+ "accuracy": 0.843,
+ "scope_accuracy": 0.467,
  "latency_s": {
   "total": 2.3,
   "prompt": 0.05,
@@ -228,7 +228,7 @@
      "evidence": "The slopes above the lake appear rugged and rocky, but no distinct fresh rockfall or landslide scars are clearly visible."
     },
     "dam_in_view": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "The lake appears to be held in a basin, but the specific outlet and ridge/dam at the end are not clearly visible."
     },
@@ -253,12 +253,12 @@
      "evidence": "No seepage or breach channel is visible."
     },
     "downstream_in_view": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "The view is dominated by the lake and surrounding mountains; the land below the lake's outlet is not clearly visible."
     },
     "downstream_people": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "A few people are visible on the rocky ground near the lake shore, but this is not downstream of the water's outlet."
     }
@@ -299,7 +299,7 @@
      "evidence": "Glacier ice and bare moraine ridges are visible surrounding the lake."
     },
     "glacier_contact": {
-     "label": "unclear",
+     "label": "skip",
      "answer": "yes",
      "evidence": "The glacier ice appears to end very close to the water's edge."
     },
@@ -1029,5 +1029,6 @@
    }
   }
  },
- "labels_reviewed_by_human": false
+ "labels_reviewed_by_human": false,
+ "labels_second_pass": "2026-10-10"
 }

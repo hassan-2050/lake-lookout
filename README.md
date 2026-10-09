@@ -162,18 +162,18 @@ each stop.
 `eval/run_eval.py` scores the checklist on 11 freely licensed lake photos (7
 glacial, a glacier with no lake, 3 non-glacial controls: a landslide lake, a
 reservoir and a village pond). Each photo is sent on its own, the way a stop is
-processed. 91 answers are scored.
+processed. 89 answers are scored.
 
 **Each iteration was measured before the next one was made** (gemma4:e4b, on
 the GPU):
 
 | version | change | accuracy | false yes | false no | too cautious |
 |---|---|---|---|---|---|
-| v1 | answer first | 75% | 3 | 4 | 16 |
-| v2 | evidence first | 71% | 5 | **18** | 3 |
-| v3 | scope questions gate dam and downstream items | 82% | 4 | 5 | 7 |
-| v4 | final prompt | **88%** | **0** | **3** | 8 |
-| v5 | v4 plus verifier bug fixes (below) | 87% | 0 | 3 | 9 |
+| v1 | answer first | 74% | 3 | 4 | 16 |
+| v2 | evidence first | 72% | 4 | **18** | 3 |
+| v3 | scope questions gate dam and downstream items | 84% | 3 | 5 | 6 |
+| v4 | final prompt | **89%** | **0** | **3** | 7 |
+| v5 | v4 plus verifier bug fixes (below) | 88% | 0 | 3 | 8 |
 
 v2 is the instructive one. Making the model state evidence first ended the
 unsupported answers, but it then confidently said "no" about things it could
@@ -183,11 +183,11 @@ not see. The scope questions in v3 fixed that.
 
 | model | accuracy | false yes | false no | per photo |
 |---|---|---|---|---|
-| gemma4:e4b | 88% | 0 | 3 | 2.4 s |
-| gemma4:e2b | 85% | 1 | 7 | 1.6 s |
-| gemma3:4b (v3 prompt) | 65% | 7 | 4 | slow on this machine* |
+| gemma4:e4b | 89% | 0 | 3 | 2.4 s |
+| gemma4:e2b | 86% | 1 | 6 | 1.6 s |
+| gemma3:4b (v3 prompt) | 65% | 6 | 4 | slow on this machine* |
 
-`gemma4:e2b` **on CPU only** (Intel i7-12700F, no GPU): 86% accuracy, about
+`gemma4:e2b` **on CPU only** (Intel i7-12700F, no GPU): 88% accuracy, about
 **20 s per photo**, so roughly 3 minutes for an 8-stop day. A laptop CPU will
 be slower than this desktop chip.
 
@@ -196,9 +196,11 @@ gemma3:4b's timing isn't representative and isn't quoted.
 
 **What these numbers are not.**
 - **Small sample:** 11 photos.
-- **Labels:** drafted by the coding agent from looking at each photo and
-  pending a person's review (`eval/labels.json` records this).
-- **Run-to-run variation:** e4b scored 82% in two runs of v3 and 88% in v4, so
+- **Labels:** drafted by the coding agent from looking at each photo, then
+  re-checked by it in a second pass that changed four ambiguous ones to skip
+  (`eval/labels.json` records both). Not yet reviewed by a person.
+  `python eval/rescore.py` re-grades every saved result after a label change.
+- **Run-to-run variation:** e4b scored 84% in two runs of v3 and 89% in v4, so
   treat differences of a few points as noise. The one consistent difference is
   that e4b makes fewer false "no" answers than e2b, which is why it's the
   default.

@@ -133,22 +133,23 @@ Getting Gemma to answer a checklist took ten minutes. Getting it to answer
 with a confident wrong answer is worse than an empty one, so I treated this as
 the real problem and measured every change.
 
-I hand-labelled 11 freely licensed lake photos: seven glacial lakes, one
-glacier with no lake in frame, and three controls that aren't glacial at all
-(a landslide lake, a reservoir and a village pond). That gives 91 scored
-answers per version. [LABEL REVIEW: replace this sentence with either "I
-reviewed every label myself" or "My coding agent drafted the labels and I
-spot-checked them".]
+I picked 11 freely licensed lake photos: seven glacial lakes, one glacier
+with no lake in frame, and three controls that aren't glacial at all (a
+landslide lake, a reservoir and a village pond). Each photo has a label for
+every question, which gives 89 scored answers per version. My coding agent
+drafted the labels by looking at each photo, then re-checked all of them in a
+second pass, which changed four ambiguous ones to "skip". No person has
+independently reviewed them yet, so treat the numbers as indicative.
 
-[SCREENSHOT 4: upload docs/post/09-iterations.png, alt text: "Five measured versions: false no answers spike to 18 in v2 and fall to 3; accuracy rises from 75% to 87-88%"]
+[SCREENSHOT 4: upload docs/post/09-iterations.png, alt text: "Five measured versions: false no answers spike to 18 in v2 and fall to 3; accuracy rises from 74% to 88-89%"]
 
 | version | change | accuracy | false "yes" | false "no" |
 |---|---|---|---|---|
-| v1 | answer, then evidence | 75% | 3 | 4 |
-| v2 | evidence, then answer | 71% | 5 | **18** |
-| v3 | "is the dam in view?" questions | 82% | 4 | 5 |
-| v4 | final prompt | **88%** | **0** | **3** |
-| v5 | v4 plus bug fixes found on real photos | 87% | 0 | 3 |
+| v1 | answer, then evidence | 74% | 3 | 4 |
+| v2 | evidence, then answer | 72% | 4 | **18** |
+| v3 | "is the dam in view?" questions | 84% | 3 | 5 |
+| v4 | final prompt | **89%** | **0** | **3** |
+| v5 | v4 plus bug fixes found on real photos | 88% | 0 | 3 |
 
 **v1: the silent "no".** The model kept answering *no* and then writing `"none"`
 as its evidence. An unsupported "no" is the most dangerous thing a hazard log
@@ -242,9 +243,9 @@ I ran the same photos through three local models:
 
 | model | accuracy | false "yes" | false "no" | per photo (RTX 4090) |
 |---|---|---|---|---|
-| gemma4:e4b | 88% | 0 | 3 | 2.4 s |
-| gemma4:e2b | 85% | 1 | 7 | 1.6 s |
-| gemma3:4b (v3 prompt) | 65% | 7 | 4 | not comparable* |
+| gemma4:e4b | 89% | 0 | 3 | 2.4 s |
+| gemma4:e2b | 86% | 1 | 6 | 1.6 s |
+| gemma3:4b (v3 prompt) | 65% | 6 | 4 | not comparable* |
 
 E4B is the default because it made the fewest false "no" answers in every run.
 **No GPU? `--cpu` switches to E2B**, which took about 20 s per photo on a desktop
@@ -323,9 +324,10 @@ python -m lookout ui        # then open the test-hunza day and press Process
 
 ## Honest limits
 
-- **Small evaluation.** 11 labelled photos. Scores move a few points between
+- **Small evaluation.** 11 labelled photos, labelled by my coding agent (two
+  passes) and not yet reviewed by a person. Scores move a few points between
   runs even at temperature 0, so treat small differences as noise.
-- **"Is the dam in view?" is the model's weak spot** (24 to 41% across runs).
+- **"Is the dam in view?" is the model's weak spot** (27 to 47% across the Gemma 4 runs).
   The rule fails safe, so a wrong "not in view" costs answers rather than
   producing false ones.
 - **Edited photos can fool it,** as the winter Borith photo showed.

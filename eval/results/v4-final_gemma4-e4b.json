@@ -2,15 +2,15 @@
  "model": "gemma4:e4b",
  "cpu_only": false,
  "counts": {
-  "scored": 91,
-  "correct": 80,
+  "scored": 89,
+  "correct": 79,
   "false_yes": 0,
   "false_no": 3,
-  "too_cautious": 8,
+  "too_cautious": 7,
   "rejected": 31
  },
- "accuracy": 0.879,
- "scope_accuracy": 0.235,
+ "accuracy": 0.888,
+ "scope_accuracy": 0.267,
  "latency_s": {
   "total": 2.42,
   "prompt": 0.16,
@@ -238,7 +238,7 @@
      "evidence": "The slopes above the lake appear rugged and rocky, but no distinct fresh rockfall or landslide scars are clearly visible."
     },
     "dam_in_view": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "The lake appears to be held in a valley, but the specific end where water flows out and the ridge/dam at that end is not clearly visible."
     },
@@ -263,12 +263,12 @@
      "evidence": "unclear"
     },
     "downstream_in_view": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "The view is dominated by the lake and surrounding mountains; the land below the lake's outlet is not clearly visible."
     },
     "downstream_people": {
-     "label": "yes",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "A few people are visible on the rocky ground near the edge of the lake in the foreground."
     }
@@ -304,7 +304,7 @@
      "evidence": "Snow and ice cover the high mountains surrounding the lake."
     },
     "glacier_contact": {
-     "label": "unclear",
+     "label": "skip",
      "answer": "unclear",
      "evidence": "The lake is surrounded by snow and ice-covered mountains, and the water is turquoise, suggesting proximity to glacial melt."
     },
@@ -1064,5 +1064,6 @@
    }
   }
  },
- "labels_reviewed_by_human": false
+ "labels_reviewed_by_human": false,
+ "labels_second_pass": "2026-10-10"
 }

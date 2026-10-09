@@ -2,14 +2,14 @@
  "model": "gemma4:e4b",
  "cpu_only": false,
  "counts": {
-  "scored": 91,
-  "correct": 65,
-  "false_yes": 5,
+  "scored": 89,
+  "correct": 64,
+  "false_yes": 4,
   "false_no": 18,
   "too_cautious": 3,
   "rejected": 0
  },
- "accuracy": 0.714,
+ "accuracy": 0.719,
  "latency_s": {
   "total": 2.16,
   "prompt": 0.15,
@@ -210,7 +210,7 @@
      "evidence": "no visible seepage or breach channel in the immediate vicinity of the lake"
     },
     "downstream_people": {
-     "label": "yes",
+     "label": "skip",
      "answer": "yes",
      "evidence": "Two small figures are visible near the edge of the lake in the foreground."
     }
@@ -240,7 +240,7 @@
      "evidence": "Large masses of white and grey ice/snow are visible in the background, along with rocky debris."
     },
     "glacier_contact": {
-     "label": "unclear",
+     "label": "skip",
      "answer": "yes",
      "evidence": "The turquoise water is immediately adjacent to the base of the large ice/snow mass."
     },
@@ -787,5 +787,6 @@
    }
   }
  },
- "labels_reviewed_by_human": false
+ "labels_reviewed_by_human": false,
+ "labels_second_pass": "2026-10-10"
 }

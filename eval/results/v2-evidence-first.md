@@ -1,7 +1,7 @@
 ## v2-evidence-first
 
-91 scored answers over 11 photos. Labels reviewed by a person: not yet.
+89 scored observation answers over 11 photos. Labels: drafted by the coding agent and re-checked by it in a second pass; not independently reviewed by a person.
 
-| model | accuracy | false yes | false no | too cautious | rejected | warm latency (prompt + generate) |
-|---|---|---|---|---|---|---|
-| gemma4:e4b | 71% | 5 | 18 | 3 | 0 | 2.16 s (0.15 + 1.94) |
+| model | accuracy | false yes | false no | too cautious | rejected | in-view questions | warm latency (prompt + generate) |
+|---|---|---|---|---|---|---|---|
+| gemma4:e4b | 72% | 4 | 18 | 3 | 0 | - | 2.16 s (0.15 + 1.94) |
