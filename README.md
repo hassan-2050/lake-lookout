@@ -25,8 +25,8 @@ In August 2026 I built a separate project that screened Himalayan glacial lakes
 from free satellite images. Its sharpest finding was about what satellites
 *cannot* see. Thyanbo Tsho, above the village of Thame in Nepal, burst on
 16 August 2024. In the pre-event satellite record for the four events that
-project studied, **only 1 of 16 scenes made it through the cloud filter**. The
-monsoon hid the lakes exactly when they mattered.
+project studied, **only 1 of 16 scenes got past the cloud-and-snow quality
+filter**. The monsoon hid the lakes exactly when they mattered.
 
 People were walking past those lakes the whole time: trekkers, guides,
 porters, herders. Lake Lookout turns a hiker into the observation the satellite
