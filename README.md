@@ -51,7 +51,8 @@ python -m lookout ui              # the app, in your browser at http://127.0.0.1
 
 ![Lake Lookout app: a processed day in Hunza with its route map and stop cards](docs/screenshots/app.png)
 
-More: [the whole day](docs/screenshots/04-result.jpg) · [phone](docs/screenshots/06-phone.jpg) · [dark mode](docs/screenshots/07-dark.jpg)
+**[Watch the 70-second demo](docs/post/lake-lookout-demo.mp4)** (the real app and model on the Hunza test day) ·
+more: [the whole day](docs/screenshots/04-result.jpg) · [phone](docs/screenshots/06-phone.jpg) · [dark mode](docs/screenshots/07-dark.jpg)
 
 **The app** runs entirely on your computer and answers only requests from this
 machine.
@@ -238,10 +239,11 @@ lookout/        ingest (EXIF time/GPS, memo times, grouping), audio (ffmpeg),
                 pipeline (shared by CLI and app), server + ui/ (the app), cli
 eval/           photos + ATTRIBUTION.md, labels.json, run_eval.py, results/
 tools/          make_synthetic_day.py, find_test_photos.py, make_internet_days.py,
+                record_demo.py, take_post_shots.py, make_chart.py (Playwright),
                 check_trip_page.mjs, e2e_ui.mjs
 trips/          synthetic-day/, test-hunza/, test-skardu/ (test data, labelled as such)
-tests/          57 tests: python -m pytest
-docs/           dev-post.md (submission draft), screenshots/
+tests/          59 tests: python -m pytest
+docs/           post/ (DEV write-up, demo video + GIF, images), screenshots/ (E2E output)
 ```
 
 Three levels of testing:

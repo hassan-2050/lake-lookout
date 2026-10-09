@@ -327,13 +327,20 @@ function mapSvg(stops) {
   </svg>`;
 }
 
+/** Shorten to the last whole word within n characters. */
+function clip(text, n) {
+  if (text.length <= n) return text;
+  const cut = text.slice(0, n);
+  return cut.slice(0, Math.max(cut.lastIndexOf(" "), n * 0.6)).replace(/[,.;:]$/, "") + "…";
+}
+
 function wireMap() {
   const tip = $("#tooltip");
   document.querySelectorAll(".pin").forEach((g) => {
     const s = state.data.result.stops.find((x) => x.id === g.dataset.stop);
     g.addEventListener("mouseenter", () => {
       tip.innerHTML = `${s.photos.length ? `<img src="${thumb(s.photos[0], 360)}" alt="">` : ""}
-        <b>${esc(s.id)}</b> · ${esc(s.time_local.slice(11))}<br>${esc((s.checklist && s.checklist.summary || s.error || "").slice(0, 120))}`;
+        <b>${esc(s.id)}</b> · ${esc(s.time_local.slice(11))}<br>${esc(clip(s.checklist && s.checklist.summary || s.error || "", 110))}`;
       tip.hidden = false;
     });
     g.addEventListener("mousemove", (e) => {

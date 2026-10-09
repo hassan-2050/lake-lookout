@@ -1,0 +1,1 @@
+playwright==1.63.0   # tools/record_demo.py, take_post_shots.py, make_chart.py (+ `python -m playwright install ffmpeg`)
