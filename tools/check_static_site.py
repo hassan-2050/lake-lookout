@@ -2,6 +2,7 @@
 
     python -m lookout export --out docs/demo
     python tools/check_static_site.py          # serves docs/ and opens /demo/
+    python tools/check_static_site.py https://hassan-2050.github.io/lake-lookout/demo/   # the live site
 
 Serves docs/ as GitHub Pages would (the demo under a sub-path) and fails on:
 any console error, any request to the local server API or to another host,
@@ -21,7 +22,9 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 PORT = 8797
-BASE = f"http://127.0.0.1:{PORT}/demo/"
+LIVE = sys.argv[1] if len(sys.argv) > 1 else None
+BASE = LIVE or f"http://127.0.0.1:{PORT}/demo/"
+ORIGIN = "/".join(BASE.split("/")[:3]) + "/"
 
 fails = 0
 
@@ -41,8 +44,10 @@ def main() -> int:
         def handle_error(self, request, client_address):
             pass                                # browsers cancel media downloads they no longer need
 
-    httpd = Server(("127.0.0.1", PORT), functools.partial(Quiet, directory=str(DOCS)))
-    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    httpd = None
+    if not LIVE:
+        httpd = Server(("127.0.0.1", PORT), functools.partial(Quiet, directory=str(DOCS)))
+        threading.Thread(target=httpd.serve_forever, daemon=True).start()
     problems, offsite, api_calls, failed = [], [], [], []
     try:
         with sync_playwright() as p:
@@ -52,7 +57,7 @@ def main() -> int:
             page.on("pageerror", lambda e: problems.append(str(e)))
             page.on("request", lambda r: (api_calls.append(r.url) if "/api/" in r.url else None,
                                           offsite.append(r.url) if not r.url.startswith(
-                                              (f"http://127.0.0.1:{PORT}/", "data:")) else None))
+                                              (ORIGIN, "data:")) else None))
             # Media requests are excluded: players cancel and re-request ranges as they please.
             media = lambda r: r.resource_type == "media"  # noqa: E731
             page.on("requestfailed", lambda r: None if media(r.request if hasattr(r, "request") else r) else failed.append(r.url))
@@ -109,7 +114,8 @@ def main() -> int:
             check("no sideways scroll on a phone", width <= 392, f"{width} px")
             browser.close()
     finally:
-        httpd.shutdown()
+        if httpd:
+            httpd.shutdown()
 
     check("never calls the local server API", not api_calls, ", ".join(api_calls[:2]))
     check("never contacts another host", not offsite, ", ".join(offsite[:2]))
