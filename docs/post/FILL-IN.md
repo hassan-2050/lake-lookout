@@ -8,7 +8,7 @@
    username. Every image is loaded from `docs/post/` in that repo, so check
    that one image URL opens in a browser before you publish.
 2. **`[YOUR_YOUTUBE_OR_LOOM_URL]`**: upload `docs/post/lake-lookout-demo.mp4`
-   (70 s, 1280×720) to YouTube (unlisted is fine) or Loom, and paste the link.
+   (98 s, 1280×720, narrated) to YouTube (unlisted is fine) or Loom, and paste the link.
    DEV embeds it with `{% embed ... %}`.
 3. **Taking it outside**: write it after your outing, using the structure
    inside the brackets. Use only what really happened. Add a screenshot of your

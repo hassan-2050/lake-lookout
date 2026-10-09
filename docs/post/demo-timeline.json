@@ -1,4 +1,35 @@
 {
- "processing_start": 14.01,
- "processing_end": 44.05
+ "intro": 0.09,
+ "new_day": 17.41,
+ "files": 20.22,
+ "process": 29.82,
+ "processing": 40.26,
+ "processing_start": 40.26,
+ "processing_end": 71.39,
+ "log": 71.39,
+ "evidence": 79.08,
+ "unclear": 84.91,
+ "conflict": 89.64,
+ "downgrades": 94.79,
+ "photos": 100.24,
+ "share": 103.41,
+ "dark": 109.99,
+ "end": 112.21,
+ "edited": {
+  "intro": 0.09,
+  "new_day": 17.41,
+  "files": 20.22,
+  "process": 29.82,
+  "processing": 40.26,
+  "log": 45.86,
+  "evidence": 53.55,
+  "unclear": 59.38,
+  "conflict": 64.11,
+  "downgrades": 69.26,
+  "photos": 74.71,
+  "share": 77.88,
+  "dark": 84.46,
+  "end": 86.68
+ },
+ "speedup": 6.11
 }

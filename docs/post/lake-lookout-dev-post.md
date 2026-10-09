@@ -80,8 +80,12 @@ safe" is worse than no app at all.
 *The demo is the real app and the real local model. To show a realistic day, it
 uses a test day I assembled from freely licensed Wikimedia photos of Hunza,
 Pakistan, with synthetic voice notes; it is labelled as such in the repo.
-Processing is sped up in the video. It took 30 seconds on my machine for 7
-stops.*
+Processing is sped up in the video. It took about 30 seconds on my machine for
+7 stops. Even the narration is local and open: it is
+[Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M), an open-weight
+text-to-speech model running on the same laptop. I checked every line by having
+Gemma 4 transcribe it back, which is how I found that the voice said "Alama"
+for "Ollama".*
 
 ![Exploring a processed day: map, evidence, disagreements](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/lake-lookout-demo.gif)
 
@@ -329,6 +333,8 @@ python -m lookout ui        # then open the test-hunza day and press Process
 - **Built with Claude Code** as my coding agent. The `eval/results/` folder is
   the loop we actually worked in: hypothesis, change, measured result.
   [OPTIONAL: link or embed your agent session here.]
+- **Narration:** Kokoro-82M (Apache-2.0) through kokoro-onnx, run locally. The
+  video is recorded from the real app with Playwright (`tools/record_demo.py`).
 - **Photos:** all evaluation and test-day photos are from Wikimedia Commons
   under CC BY / CC BY-SA licences, credited in `eval/photos/ATTRIBUTION.md` and
   in each test day's README.
