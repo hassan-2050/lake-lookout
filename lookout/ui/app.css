@@ -17,7 +17,19 @@
     --unc: #f1cf82; --unc-bg: #3a3020; --err: #f3a19b; --err-bg: #3d2020;
     --pin-glacial: #3fb6c6; --pin-not: #8b98a1; --pin-unclear: #d9ae45;
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .25);
+    color-scheme: dark;
   }
+}
+/* An explicit dark choice (data-theme="dark") wins over a light system setting. */
+:root[data-theme="dark"] {
+  --bg: #0f1517; --panel: #172024; --panel-2: #1b262a; --ink: #e5ecec; --muted: #9aabae;
+  --line: #2a373b; --line-2: #233034;
+  --brand: #8fd3dc; --accent: #3fb6c6; --accent-ink: #062126; --accent-soft: #163a40;
+  --yes: #8fdcc8; --yes-bg: #173a33; --no: #c6cde0; --no-bg: #262c3c;
+  --unc: #f1cf82; --unc-bg: #3a3020; --err: #f3a19b; --err-bg: #3d2020;
+  --pin-glacial: #3fb6c6; --pin-not: #8b98a1; --pin-unclear: #d9ae45;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 16px rgba(0, 0, 0, .25);
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }

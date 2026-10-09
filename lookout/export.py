@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import shutil
+import subprocess
 from pathlib import Path
 
 from .server import OUT as OUT_DIR, UI_DIR, App
@@ -24,6 +25,20 @@ THUMB_SIZES = (360, 640, 1600)       # must match URLS.thumb in ui/app.js
 OUTPUT_FILES = ("trip.html", "field_log.csv", "field_log.geojson")
 TEST_NOTE = ("Test data, not a real hike: the photo credits say where the photos come "
              "from and what is synthetic.")
+
+
+def to_web_audio(src: Path, dest: Path) -> None:
+    """Re-encode a voice memo as AAC in an .mp4 file.
+
+    Phones record m4a, mp3, ogg, AMR or 3GP; browsers cannot play AMR or 3GP,
+    and some static hosts refuse to serve .m4a. AAC in .mp4 plays everywhere.
+    """
+    ff = shutil.which("ffmpeg")
+    if not ff:
+        raise SystemExit("ffmpeg is needed to export voice notes (https://ffmpeg.org)")
+    subprocess.run([ff, "-v", "error", "-y", "-i", str(src), "-vn", "-ac", "1",
+                    "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", str(dest)],
+                   check=True)
 
 
 def _write_json(path: Path, obj) -> None:
@@ -60,8 +75,10 @@ def export(trips: Path, out: Path, *, days: list[str] | None = None,
 
         files = data / "files" / name
         files.mkdir(parents=True, exist_ok=True)
+        voice = data / "audio" / name
+        voice.mkdir(parents=True, exist_ok=True)
         for memo in {m["name"] for s in view["result"]["stops"] for m in s["memos"]}:
-            shutil.copy2(trips / name / memo, files / memo)
+            to_web_audio(trips / name / memo, voice / f"{memo}.mp4")
         readme = trips / name / "README.md"
         if readme.exists():
             shutil.copy2(readme, files / "README.md")

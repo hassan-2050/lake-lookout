@@ -26,6 +26,8 @@ const URLS = STATIC ? {
   day: (d) => `data/days/${enc(d)}.json`,
   thumb: (d, name, s) => `data/thumbs/${enc(d)}/${enc(name)}.${s <= 360 ? 360 : s <= 640 ? 640 : 1600}.jpg`,
   file: (d, name) => `data/files/${enc(d)}/${enc(name)}`,
+  // Voice notes are re-encoded to AAC in .mp4 on export: plays in every browser and host.
+  audio: (d, name) => `data/audio/${enc(d)}/${enc(name)}.mp4`,
   out: (d, f) => `data/out/${enc(d)}/${f}`,
 } : {
   health: () => "/api/health",
@@ -33,6 +35,7 @@ const URLS = STATIC ? {
   day: (d) => `/api/days/${enc(d)}`,
   thumb: (d, name, s) => `/api/days/${enc(d)}/thumb/${enc(name)}?s=${s}`,
   file: (d, name) => `/api/days/${enc(d)}/file/${enc(name)}`,
+  audio: (d, name) => `/api/days/${enc(d)}/file/${enc(name)}`,
   out: (d, f) => `/api/days/${enc(d)}/out/${f}`,
 };
 
@@ -404,7 +407,7 @@ function card(s) {
        ${s.photos.length > 1 ? `<div class="strip">${s.photos.slice(1).map((p) =>
          `<img loading="lazy" src="${thumb(p, 160)}" alt="" data-action="zoom" data-photo="${esc(p)}">`).join("")}</div>` : ""}`
     : `<div class="nophoto">No photo at this stop.<br>Observations come from the voice note.</div>`;
-  const audio = s.memos.map((m) => `<audio controls preload="none" src="${URLS.file(day, m.name)}" title="${esc(m.name)}"></audio>`).join("");
+  const audio = s.memos.map((m) => `<audio controls preload="none" src="${URLS.audio(day, m.name)}" title="${esc(m.name)}"></audio>`).join("");
   const where = s.lat != null ? `${s.lat.toFixed(5)}, ${s.lon.toFixed(5)}${s.alt_m != null ? ` · ${Math.round(s.alt_m)} m` : ""}` : "no GPS";
   const conflicts = (s.conflicts || []).map((c) => c.item);
   const badges = [

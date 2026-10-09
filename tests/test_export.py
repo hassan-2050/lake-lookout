@@ -36,7 +36,8 @@ def test_export_writes_the_site(processed, tmp_path):
     assert day["job"] is None and len(day["result"]["stops"]) == 1
     for size in THUMB_SIZES:
         assert (out / f"data/thumbs/day-one/lake.jpg.{size}.jpg").read_bytes()[:2] == b"\xff\xd8"
-    assert (out / "data/files/day-one/note.m4a").exists()
+    voice = out / "data/audio/day-one/note.m4a.mp4"
+    assert voice.exists() and voice.read_bytes()[4:8] == b"ftyp"     # an MP4 container
     assert (out / "data/files/day-one/README.md").exists()
     for f in ("trip.html", "field_log.csv", "field_log.geojson"):
         assert (out / "data/out/day-one" / f).exists()

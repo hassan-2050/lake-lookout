@@ -79,8 +79,9 @@ def main() -> int:
                       f"{n_cards}/{stops} cards, {broken} broken")
                 check(f"{day}: process controls hidden", not page.locator("[data-action='process']").is_visible())
                 # Voice notes are checked the way a visitor hears them: in an audio
-                # player. (On the machine this was built on, a script's fetch() of a
-                # URL ending in .m4a returns an empty 204 while the player plays it.)
+                # player. (On the machine this was built on, Internet Download Manager's
+                # browser hook answered a script's fetch() of .m4a/.mp3 with an empty
+                # 204 and saved the file itself; the audio player is not intercepted.)
                 played = page.evaluate("""() => Promise.all([...document.querySelectorAll('.card audio')].map((el) =>
                     new Promise((ok) => { const a = new Audio(el.src); a.muted = true;
                       a.onloadedmetadata = () => ok(a.duration > 0); a.onerror = () => ok(false);
