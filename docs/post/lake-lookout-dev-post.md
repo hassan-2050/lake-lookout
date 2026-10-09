@@ -6,7 +6,7 @@ tags: devchallenge, hf26challenge, gemma, opensource
 cover_image: https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/cover.png
 ---
 
-*This is a submission for the [Hacktoberfest Open-Source AI Challenge: Week 1](https://dev.to/challenges/hacktoberfest-week1-2026-10-05) (Touch Grass), entered for **Best Use of Gemma**.*
+*This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05)*
 
 > **TL;DR:** Lake Lookout turns a hike past glacial lakes into a field log that
 > researchers can use. On the trail you only take photos and short voice notes,
@@ -18,7 +18,9 @@ cover_image: https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/doc
 
 [SCREENSHOT 1: upload docs/post/01-app.png, alt text: "Lake Lookout: a processed day in Hunza with its route map, stats and stop cards"]
 
-## The lake nobody was watching
+## What I Built
+
+### The lake nobody was watching
 
 On 16 August 2024, Thyanbo Tsho, a small glacial lake above the village of
 Thame in Nepal's Everest region, burst. The flood reached Thame about 22 to 25
@@ -39,9 +41,7 @@ So, for a challenge called *Touch Grass*, I built the opposite of a dashboard
 you stare at. **Lake Lookout makes the hiker the sensor, and keeps the screen
 for the evening.**
 
-## What I built
-
-A day with Lake Lookout looks like this:
+### How a day works
 
 1. **On the trail.** At each lake, take one wide photo and record 10 to 30
    seconds of what you see: *"Grey milky water, a long ridge of loose rock
@@ -57,6 +57,16 @@ A day with Lake Lookout looks like this:
    straight into a spreadsheet or a GIS.
 
 [GIF 1: upload docs/post/clips/1-process.gif, alt text: "Dropping in a day's photos and voice notes and pressing Process; the model wait is sped up"]
+
+### Who it's for
+
+Anyone who walks past mountain lakes: trekkers, and above all the guides,
+porters and herders who pass the same lakes every season. The logs are for the
+people who study these lakes and are qualified to interpret them. The screen
+time is a few minutes in the evening; the rest of the day is spent looking at
+the lake.
+
+### What it records
 
 The checklist asks what a hiker can actually see, and where a question
 corresponds to a published hazard indicator, it says which one:
@@ -74,6 +84,34 @@ corresponds to a published hazard indicator, it says which one:
 **It deliberately gives no risk score and raises no alert.** It records
 observations for people qualified to interpret them. A wrong "this lake is
 safe" is worse than no app at all.
+
+### Taking it outside: a dry run first
+
+I haven't done my own walk yet as I write this, so I won't pretend I have.
+To see what a real day produces before I go, I built one. It has seven stops
+along the Karakoram Highway in Hunza, from Karimabad to Passu, assembled from
+geotagged Wikimedia photos with synthetic voice notes. The repo labels it as
+test data and credits every photographer. Then I processed it the way you
+would on an evening at a guesthouse: one click, and **28 seconds** on my
+machine's GPU for all seven stops.
+
+**What it got right:**
+
+- **No lake, no claims.** At Baltit Fort, with no water in the photo, *water
+  body* came back **no**.
+- **The hiker's words were enough.** A voice-only stop, *"a small muddy pond
+  next to the road, no ice anywhere near it"*, was logged as **not glacial**
+  from the words alone.
+- **Disagreements were shown, not resolved.** At Passu Glacier the photo and
+  the voice note disagreed about water and ice. The log shows both and picks
+  neither.
+
+**What it got wrong:** the heavily edited winter photo of Borith Lake. More on
+that under *How I Built It*.
+
+[SCREENSHOT 3: upload docs/post/07-trip-page.png, alt text: "The Hunza dry run as a shareable, offline trip page"]
+
+My own walk is next, and I'll add it here.
 
 ## Demo
 
@@ -96,37 +134,77 @@ for "Ollama".*
 
 [SCREENSHOT 2: upload docs/post/10-live-demo.png, alt text: "The read-only live demo on GitHub Pages"]
 
-**Code:** [https://github.com/hassan-2050/lake-lookout](https://github.com/hassan-2050/lake-lookout)
+## Code
 
-## Taking it outside: a dry run first
+{% github hassan-2050/lake-lookout %}
 
-I haven't done my own walk yet as I write this, so I won't pretend I have.
-To see what a real day produces before I go, I built one. It has seven stops
-along the Karakoram Highway in Hunza, from Karimabad to Passu, assembled from
-geotagged Wikimedia photos with synthetic voice notes. The repo labels it as
-test data and credits every photographer. Then I processed it the way you
-would on an evening at a guesthouse: one click, and **28 seconds** on my
-machine's GPU for all seven stops.
+Try it yourself in a few minutes; the repo includes test days:
 
-**What it got right:**
+```bash
+ollama pull gemma4:e4b      # or gemma4:e2b for a laptop without a GPU
+git clone https://github.com/hassan-2050/lake-lookout && cd lake-lookout
+python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # Windows
+# python -m venv .venv && .venv/bin/pip install -r requirements.txt     # macOS/Linux
+python -m lookout ui        # then open the test-hunza day and press Process
+```
 
-- **No lake, no claims.** At Baltit Fort, with no water in the photo, *water
-  body* came back **no**.
-- **The hiker's words were enough.** A voice-only stop, *"a small muddy pond
-  next to the road, no ice anywhere near it"*, was logged as **not glacial**
-  from the words alone.
-- **Disagreements were shown, not resolved.** At Passu Glacier the photo and
-  the voice note disagreed about water and ice. The log shows both and picks
-  neither.
+- **Licence:** MIT.
+- **Photos:** all evaluation and test-day photos are from Wikimedia Commons
+  under CC BY / CC BY-SA licences, credited in `eval/photos/ATTRIBUTION.md` and
+  in each test day's README.
+- **Video:** recorded from the real app with Playwright
+  (`tools/record_demo.py`), narrated by Kokoro-82M (Apache-2.0) through
+  kokoro-onnx, run locally.
 
-**What it got wrong:** the heavily edited winter photo of Borith Lake. More on
-that below.
+## How I Built It
 
-[SCREENSHOT 3: upload docs/post/07-trip-page.png, alt text: "The Hunza dry run as a shareable, offline trip page"]
+### Open-source AI at the core
 
-My own walk is next, and I'll add it here.
+Everything that thinks runs locally on open weights:
 
-## The interesting part: making a small model unable to overclaim
+- **Gemma 4 E4B** (or **E2B** on a laptop without a GPU), served by **Ollama**,
+  does all three jobs: it transcribes the voice note from audio, reads the photo,
+  and returns the checklist as JSON constrained to a schema.
+- **Kokoro-82M**, an open-weight text-to-speech model, voiced the demo video.
+- Around them: Python (standard library plus Pillow), and ffmpeg for audio.
+
+```
+phone photos (EXIF time + GPS) ─┐
+phone voice notes (m4a/mp3/…) ──┼─► group into stops (time + distance, UTC-safe)
+                                │
+                                ▼
+          ┌─────────── offline guard: only 127.0.0.1 ───────────┐
+          │  ffmpeg → 16 kHz WAV ─► Gemma 4: transcript          │
+          │  photo ─► Gemma 4: checklist JSON (evidence first)   │
+          │  voice ─► Gemma 4: checklist JSON (evidence first)   │
+          │  rules: evidence · in-view · transcript · keywords   │
+          │  merge photo + voice (disagreement → shown, unclear) │
+          └──────────────────────────────────────────────────────┘
+                                ▼
+          trip.html (self-contained) · field_log.csv · field_log.geojson
+```
+
+**The app** (`python -m lookout ui`) is a small local server, listening only on
+your own machine, with a plain HTML/CSS/JS front end and no libraries. It has
+drag-and-drop days, live progress per stop, an offline route map, filters and
+one-click evidence. It works in dark mode and at phone width.
+
+[SCREENSHOT 7: upload docs/post/06-dark.png, alt text: "Lake Lookout in dark mode"]
+
+[GIF 4: upload docs/post/clips/5-phone.gif, alt text: "Lake Lookout at phone width"]
+
+**Three levels of testing:**
+
+- **62 unit and API tests.** The API tests run the real server with a stand-in
+  model.
+- **A checker** that compares each generated trip page with its CSV.
+- **A browser end-to-end test** that drives headless Chrome through the whole
+  app with the real model, with about two dozen checks. It creates a day,
+  uploads through the file picker and processes it. Then it uses the map,
+  filters, evidence and lightbox, checks every photo decodes and that there's no
+  sideways scroll on a phone, and expects zero console errors.
+
+### The interesting part: making a small model unable to overclaim
 
 Getting Gemma to answer a checklist took ten minutes. Getting it to answer
 **only what it could actually see** took the rest of the build. A field log
@@ -196,7 +274,7 @@ model said as well as what the log kept:
 
 [SCREENSHOT 6: upload docs/post/04-downgrades.png, alt text: "Answers the model could not back up, downgraded with their reasons"]
 
-## What real photos taught me
+### What real photos taught me
 
 Labelled photos only go so far, so I also built two realistic test days in
 Gilgit-Baltistan (Hunza and Skardu) from geotagged Wikimedia photos. They
@@ -222,7 +300,28 @@ hadn't:
 - **Place names get misheard.** "Attabad" came back as "A bad lake", and
   "Satpara" as "Sapporo". The observations survive; the names don't.
 
-## Why open matters here
+### Honest limits
+
+- **Small evaluation.** 11 labelled photos, labelled by my coding agent (two
+  passes) and not yet reviewed by a person. Scores move a few points between
+  runs even at temperature 0, so treat small differences as noise.
+- **"Is the dam in view?" is the model's weak spot** (27 to 47% across the
+  Gemma 4 runs). The rule fails safe, so a wrong "not in view" costs answers
+  rather than producing false ones.
+- **Edited photos can fool it,** as the winter Borith photo showed.
+- **Voice in other languages:** the transcription prompt asks for the original
+  language plus an English line, but I have only tested English so far.
+- **It is not a hazard assessment, and it won't become one by adding a score.**
+
+### What's next
+
+- Voice notes in **Urdu and Nepali** from the guides and porters who walk past
+  these lakes most often, with English in the log.
+- A way to hand a season of logs to the people who study these lakes, in the
+  format they actually want. I'd rather ask them than guess.
+- Running E2B on the phone itself, so the evening step needs no laptop.
+
+## Why Does Open Innovation Matter?
 
 **There is no signal where the lakes are.** Above the tree line in the
 Himalaya and the Karakoram, mobile data can be gone for days. A cloud API is
@@ -260,9 +359,27 @@ and returns JSON constrained to a schema. There is no separate speech model to
 install and no second runtime: one `ollama pull` and you have the whole
 pipeline.
 
-## Best Use of Gemma
+**What a closed API wouldn't have allowed:** working with no signal at all,
+keeping people's locations and voices on their own laptop, and running
+hundreds of measured experiments at no cost per call. Each of those is
+something the project depends on, not a nice extra.
 
-Gemma 4 is the core of Lake Lookout, not an add-on:
+## My Agent Session
+
+I built Lake Lookout with **Claude Code** as my coding agent. The repository
+was created during the challenge week, and the commit history shows it going
+from an empty folder to this. The `eval/results/` folder is the loop we
+actually worked in: hypothesis, change, measured result. Each version in the
+table above is a saved result file you can re-score with `eval/rescore.py`.
+
+[OPTIONAL AGENT SESSION: paste the DevRelay agent_session embed here, or delete this line]
+
+The satellite project mentioned at the top is earlier, separate work: it's the
+reason this one exists, not part of it.
+
+## Prize Categories
+
+**Best Use of Gemma.** Gemma 4 is the core of Lake Lookout, not an add-on:
 
 - **Speech:** Gemma 4 transcribes each voice note directly from audio.
 - **Vision:** Gemma 4 reads each photo against the checklist.
@@ -273,91 +390,6 @@ Gemma 4 is the core of Lake Lookout, not an add-on:
   offline through Ollama.
 - **Measured, not assumed:** a labelled evaluation, a three-model comparison,
   and the honest failure cases above.
-
-## How it's built
-
-```
-phone photos (EXIF time + GPS) ─┐
-phone voice notes (m4a/mp3/…) ──┼─► group into stops (time + distance, UTC-safe)
-                                │
-                                ▼
-          ┌─────────── offline guard: only 127.0.0.1 ───────────┐
-          │  ffmpeg → 16 kHz WAV ─► Gemma 4: transcript          │
-          │  photo ─► Gemma 4: checklist JSON (evidence first)   │
-          │  voice ─► Gemma 4: checklist JSON (evidence first)   │
-          │  rules: evidence · in-view · transcript · keywords   │
-          │  merge photo + voice (disagreement → shown, unclear) │
-          └──────────────────────────────────────────────────────┘
-                                ▼
-          trip.html (self-contained) · field_log.csv · field_log.geojson
-```
-
-- **Python** standard library plus Pillow, **ffmpeg** for audio, **Ollama** for
-  Gemma 4.
-- **The app** (`python -m lookout ui`) is a small local server, listening only
-  on your own machine, with a plain HTML/CSS/JS front end and no libraries. It
-  has drag-and-drop days, live progress per stop, an offline route map, filters
-  and one-click evidence. It works in dark mode and at phone width.
-
-[SCREENSHOT 7: upload docs/post/06-dark.png, alt text: "Lake Lookout in dark mode"]
-- **Three levels of testing:**
-  - **59 unit and API tests.** The API tests run the real server with a
-    stand-in model.
-  - **A checker** that compares each generated trip page with its CSV.
-  - **A browser end-to-end test** that drives headless Chrome through the whole
-    app with the real model and makes 25 checks. It creates a day, uploads
-    through the file picker and processes it. Then it uses the map, filters,
-    evidence and lightbox, checks every photo decodes and that there's no
-    sideways scroll on a phone, and expects zero console errors.
-
-[GIF 4: upload docs/post/clips/5-phone.gif, alt text: "Lake Lookout at phone width"]
-
-Try it yourself in a few minutes; the repo includes test days:
-
-```bash
-ollama pull gemma4:e4b      # or gemma4:e2b for a laptop without a GPU
-git clone https://github.com/hassan-2050/lake-lookout && cd lake-lookout
-python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # Windows
-# python -m venv .venv && .venv/bin/pip install -r requirements.txt     # macOS/Linux
-python -m lookout ui        # then open the test-hunza day and press Process
-```
-
-## Honest limits
-
-- **Small evaluation.** 11 labelled photos, labelled by my coding agent (two
-  passes) and not yet reviewed by a person. Scores move a few points between
-  runs even at temperature 0, so treat small differences as noise.
-- **"Is the dam in view?" is the model's weak spot** (27 to 47% across the Gemma 4 runs).
-  The rule fails safe, so a wrong "not in view" costs answers rather than
-  producing false ones.
-- **Edited photos can fool it,** as the winter Borith photo showed.
-- **Voice in other languages:** the transcription prompt asks for the original
-  language plus an English line, but I have only tested English so far.
-- **It is not a hazard assessment, and it won't become one by adding a score.**
-
-## What's next
-
-- Voice notes in **Urdu and Nepali** from the guides and porters who walk past
-  these lakes most often, with English in the log.
-- A way to hand a season of logs to the people who study these lakes, in the
-  format they actually want. I'd rather ask them than guess.
-- Running E2B on the phone itself, so the evening step needs no laptop.
-
-## Credits and disclosure
-
-- **Built during the challenge window.** The repository was created and built
-  this week; the commit history shows it going from an empty folder to this.
-  The satellite project mentioned at the top is earlier, separate work: it's
-  the reason this one exists, not part of it.
-- **Built with Claude Code** as my coding agent. The `eval/results/` folder is
-  the loop we actually worked in: hypothesis, change, measured result.
-
-- **Narration:** Kokoro-82M (Apache-2.0) through kokoro-onnx, run locally. The
-  video is recorded from the real app with Playwright (`tools/record_demo.py`).
-- **Photos:** all evaluation and test-day photos are from Wikimedia Commons
-  under CC BY / CC BY-SA licences, credited in `eval/photos/ATTRIBUTION.md` and
-  in each test day's README.
-- **Licence:** MIT.
 
 Thanks for reading. If you live or walk near glacial lakes and want to try it,
 I'd love to hear what it gets wrong.
