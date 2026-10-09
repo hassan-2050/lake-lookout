@@ -9,57 +9,211 @@
   "photos": {
     "imja_tsho": {
       "kind": "glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "yes", "glacier_contact": "unclear", "calving_icebergs": "no", "moraine_dam": "unclear", "low_freeboard": "unclear", "steep_dam_face": "unclear", "steep_slopes_above": "yes", "fresh_scars_above": "skip", "seepage_breach": "unclear", "downstream_people": "unclear"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "yes",
+        "glacier_contact": "unclear",
+        "calving_icebergs": "no",
+        "steep_slopes_above": "yes",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "no",
+        "moraine_dam": "unclear",
+        "low_freeboard": "unclear",
+        "steep_dam_face": "unclear",
+        "seepage_breach": "unclear",
+        "downstream_in_view": "no",
+        "downstream_people": "unclear"
+      },
       "note": "Lateral moraine and grey lake below steep rock walls; the dam and downstream are behind the camera. Foreground hummocks may be debris-covered ice, so contact is not judged."
     },
     "tsho_rolpa": {
       "kind": "glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "yes", "glacier_contact": "unclear", "calving_icebergs": "no", "moraine_dam": "unclear", "low_freeboard": "unclear", "steep_dam_face": "unclear", "steep_slopes_above": "yes", "fresh_scars_above": "skip", "seepage_breach": "unclear", "downstream_people": "unclear"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "yes",
+        "glacier_contact": "unclear",
+        "calving_icebergs": "no",
+        "steep_slopes_above": "yes",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "no",
+        "moraine_dam": "unclear",
+        "low_freeboard": "unclear",
+        "steep_dam_face": "unclear",
+        "seepage_breach": "unclear",
+        "downstream_in_view": "no",
+        "downstream_people": "unclear"
+      },
       "note": "Milky lake, glaciated peak and moraine slopes; the person is on the shore, not downstream."
     },
     "gokyo": {
       "kind": "glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "yes", "glacier_contact": "no", "calving_icebergs": "no", "moraine_dam": "yes", "low_freeboard": "unclear", "steep_dam_face": "unclear", "steep_slopes_above": "yes", "fresh_scars_above": "skip", "seepage_breach": "unclear", "downstream_people": "yes"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "yes",
+        "glacier_contact": "no",
+        "calving_icebergs": "no",
+        "steep_slopes_above": "yes",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "yes",
+        "moraine_dam": "yes",
+        "low_freeboard": "unclear",
+        "steep_dam_face": "unclear",
+        "seepage_breach": "unclear",
+        "downstream_in_view": "yes",
+        "downstream_people": "yes"
+      },
       "note": "Debris-covered Ngozumpa glacier is beside the lake but separated from it by the lateral moraine ridge that holds the lake; lodges sit at the outlet end."
     },
     "palcacocha": {
       "kind": "glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "yes", "glacier_contact": "unclear", "calving_icebergs": "no", "moraine_dam": "unclear", "low_freeboard": "unclear", "steep_dam_face": "unclear", "steep_slopes_above": "yes", "fresh_scars_above": "skip", "seepage_breach": "unclear", "downstream_people": "unclear"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "yes",
+        "glacier_contact": "unclear",
+        "calving_icebergs": "no",
+        "steep_slopes_above": "yes",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "no",
+        "moraine_dam": "unclear",
+        "low_freeboard": "unclear",
+        "steep_dam_face": "unclear",
+        "seepage_breach": "unclear",
+        "downstream_in_view": "no",
+        "downstream_people": "unclear"
+      },
       "note": "Hanging ice and an icefall directly above a turquoise lake (2002 photo). Whether the ice reaches the water is not clear at this resolution."
     },
     "jokulsarlon": {
       "kind": "glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "yes", "glacier_contact": "skip", "calving_icebergs": "yes", "moraine_dam": "unclear", "low_freeboard": "unclear", "steep_dam_face": "unclear", "steep_slopes_above": "no", "fresh_scars_above": "skip", "seepage_breach": "unclear", "downstream_people": "unclear"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "yes",
+        "glacier_contact": "skip",
+        "calving_icebergs": "yes",
+        "steep_slopes_above": "no",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "no",
+        "moraine_dam": "unclear",
+        "low_freeboard": "unclear",
+        "steep_dam_face": "unclear",
+        "seepage_breach": "unclear",
+        "downstream_in_view": "no",
+        "downstream_people": "unclear"
+      },
       "note": "Large icebergs on the lagoon; the glacier tongue is in the far distance. Low hills, not steep walls, around the water."
     },
     "tasman": {
       "kind": "glacier_no_lake",
-      "labels": {"water_body": "no", "glacial_setting": "yes", "glacier_contact": "skip", "calving_icebergs": "skip", "moraine_dam": "skip", "low_freeboard": "skip", "steep_dam_face": "skip", "steep_slopes_above": "skip", "fresh_scars_above": "skip", "seepage_breach": "skip", "downstream_people": "skip"},
+      "labels": {
+        "water_body": "no",
+        "glacial_setting": "yes",
+        "glacier_contact": "skip",
+        "calving_icebergs": "skip",
+        "steep_slopes_above": "skip",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "skip",
+        "moraine_dam": "skip",
+        "low_freeboard": "skip",
+        "steep_dam_face": "skip",
+        "seepage_breach": "skip",
+        "downstream_in_view": "skip",
+        "downstream_people": "skip"
+      },
       "note": "Aerial view of a glacier with no lake in frame. The test is that no lake is invented."
     },
     "mueller": {
       "kind": "glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "yes", "glacier_contact": "yes", "calving_icebergs": "skip", "moraine_dam": "yes", "low_freeboard": "unclear", "steep_dam_face": "unclear", "steep_slopes_above": "yes", "fresh_scars_above": "skip", "seepage_breach": "unclear", "downstream_people": "skip"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "yes",
+        "glacier_contact": "yes",
+        "calving_icebergs": "skip",
+        "steep_slopes_above": "yes",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "yes",
+        "moraine_dam": "yes",
+        "low_freeboard": "unclear",
+        "steep_dam_face": "unclear",
+        "seepage_breach": "unclear",
+        "downstream_in_view": "yes",
+        "downstream_people": "skip"
+      },
       "note": "Mueller Lake against debris-covered glacier ice (foreground); Hooker Lake behind a terminal moraine with its outlet river cutting through."
     },
     "attabad": {
       "kind": "not_glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "no", "glacier_contact": "no", "calving_icebergs": "no", "moraine_dam": "unclear", "low_freeboard": "unclear", "steep_dam_face": "unclear", "steep_slopes_above": "yes", "fresh_scars_above": "skip", "seepage_breach": "unclear", "downstream_people": "unclear"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "no",
+        "glacier_contact": "no",
+        "calving_icebergs": "no",
+        "steep_slopes_above": "yes",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "no",
+        "moraine_dam": "unclear",
+        "low_freeboard": "unclear",
+        "steep_dam_face": "unclear",
+        "seepage_breach": "unclear",
+        "downstream_in_view": "no",
+        "downstream_people": "unclear"
+      },
       "note": "Landslide-dammed lake in a bedrock gorge, turquoise from glacier-fed rivers upstream. Negative control for colour alone: no ice or moraine in view."
     },
     "rawal": {
       "kind": "not_glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "no", "glacier_contact": "no", "calving_icebergs": "no", "moraine_dam": "unclear", "low_freeboard": "unclear", "steep_dam_face": "unclear", "steep_slopes_above": "no", "fresh_scars_above": "skip", "seepage_breach": "unclear", "downstream_people": "skip"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "no",
+        "glacier_contact": "no",
+        "calving_icebergs": "no",
+        "steep_slopes_above": "no",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "no",
+        "moraine_dam": "unclear",
+        "low_freeboard": "unclear",
+        "steep_dam_face": "unclear",
+        "seepage_breach": "unclear",
+        "downstream_in_view": "skip",
+        "downstream_people": "skip"
+      },
       "note": "Low reservoir shoreline with forested hills behind; the dam is out of view."
     },
     "pond": {
       "kind": "not_glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "no", "glacier_contact": "no", "calving_icebergs": "no", "moraine_dam": "no", "low_freeboard": "skip", "steep_dam_face": "skip", "steep_slopes_above": "no", "fresh_scars_above": "no", "seepage_breach": "skip", "downstream_people": "yes"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "no",
+        "glacier_contact": "no",
+        "calving_icebergs": "no",
+        "steep_slopes_above": "no",
+        "fresh_scars_above": "no",
+        "dam_in_view": "skip",
+        "moraine_dam": "no",
+        "low_freeboard": "skip",
+        "steep_dam_face": "skip",
+        "seepage_breach": "skip",
+        "downstream_in_view": "yes",
+        "downstream_people": "yes"
+      },
       "note": "Village pond with grassy banks and a brick edge; houses, a church and a footbridge beside it."
     },
     "reservoir": {
       "kind": "not_glacial",
-      "labels": {"water_body": "yes", "glacial_setting": "no", "glacier_contact": "no", "calving_icebergs": "no", "moraine_dam": "unclear", "low_freeboard": "skip", "steep_dam_face": "skip", "steep_slopes_above": "skip", "fresh_scars_above": "skip", "seepage_breach": "skip", "downstream_people": "skip"},
+      "labels": {
+        "water_body": "yes",
+        "glacial_setting": "no",
+        "glacier_contact": "no",
+        "calving_icebergs": "no",
+        "steep_slopes_above": "skip",
+        "fresh_scars_above": "skip",
+        "dam_in_view": "no",
+        "moraine_dam": "unclear",
+        "low_freeboard": "skip",
+        "steep_dam_face": "skip",
+        "seepage_breach": "skip",
+        "downstream_in_view": "skip",
+        "downstream_people": "skip"
+      },
       "note": "Meandering reservoir between forested hills; the dam is out of view."
     }
   }

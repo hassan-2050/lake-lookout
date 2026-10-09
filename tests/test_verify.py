@@ -66,6 +66,47 @@ def test_unknown_answer_word_becomes_unclear():
     assert checked["water_body"]["answer"] == "unclear"
 
 
+def test_dam_items_need_the_dam_in_view():
+    """'No seepage visible' about a dam behind the camera is not an observation."""
+    raw = _raw(seepage_breach={"answer": "no", "evidence": "no seepage visible",
+                               "source": "photo"},
+               dam_in_view={"answer": "no", "evidence": "outlet end out of frame",
+                            "source": "photo"})
+    checked, down = verify(raw, has_photo=True, has_voice=False)
+    assert checked["seepage_breach"]["answer"] == "unclear"
+    assert "not confirmed" in down[-1]["reason"]
+
+
+def test_dam_items_stand_when_the_dam_is_in_view():
+    raw = _raw(seepage_breach={"answer": "no", "evidence": "dry outer face of ridge",
+                               "source": "photo"},
+               dam_in_view={"answer": "yes", "evidence": "outlet ridge at left",
+                            "source": "photo"})
+    checked, down = verify(raw, has_photo=True, has_voice=False)
+    assert checked["seepage_breach"]["answer"] == "no"
+    assert down == []
+
+
+def test_hikers_words_can_answer_out_of_view_items():
+    raw = _raw(moraine_dam={"answer": "yes", "evidence": "ridge of loose rock",
+                            "source": "voice"})
+    checked, _ = verify(raw, has_photo=True, has_voice=True)
+    assert checked["moraine_dam"]["answer"] == "yes"
+
+
+def test_downstream_needs_downstream_in_view():
+    raw = _raw(downstream_people={"answer": "no", "evidence": "no houses visible",
+                                  "source": "photo"})
+    checked, _ = verify(raw, has_photo=True, has_voice=False)
+    assert checked["downstream_people"]["answer"] == "unclear"
+
+
+def test_schema_puts_evidence_before_answer():
+    """Field order is generation order; see json_schema's docstring."""
+    props = list(json_schema()["properties"]["water_body"]["properties"])
+    assert props.index("evidence") < props.index("answer")
+
+
 def test_schema_requires_every_item_and_summary():
     s = json_schema()
     assert set(s["required"]) == set(ITEM_IDS) | {"summary"}

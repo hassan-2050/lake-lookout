@@ -11,13 +11,18 @@ not support. These rules decide what the log is allowed to claim:
   the voice note when there was no voice note, or a photo when there was none,
   is a fabrication, and the answer becomes "unclear".
 * A field the model skipped becomes "unclear", never "no".
+* An item about the dam, or about what is downstream, can only be judged from
+  a photo when that part of the scene is confirmed in view (the scope items
+  dam_in_view and downstream_in_view). Otherwise only the hiker's own words can
+  answer it. Without this rule the model wrote "no seepage visible" about dams
+  that were behind the camera (eval/results/v2-evidence-first.md).
 
 Every downgrade is recorded with its reason, so the log shows what the model
 said as well as what was kept.
 """
 from __future__ import annotations
 
-from .checklist import ANSWERS, ITEM_IDS
+from .checklist import ANSWERS, BY_ID, ITEM_IDS, ITEMS
 
 # Evidence strings that say nothing. Compared after lower-casing and stripping
 # punctuation.
@@ -70,6 +75,20 @@ def verify(raw: dict, *, has_photo: bool, has_voice: bool) -> tuple[dict, list[d
         else:
             checked[item] = {"answer": answer, "evidence": evidence,
                              "source": source if answer != "unclear" else "none"}
+
+    for item in ITEMS:
+        if not item.needs:
+            continue
+        entry = checked[item.id]
+        in_view = checked[item.needs]["answer"] == "yes"
+        from_voice = entry["source"] in ("voice", "both")
+        if entry["answer"] != "unclear" and not in_view and not from_voice:
+            downgrades.append({
+                "item": item.id, "model_answer": entry["answer"],
+                "reason": f"'{BY_ID[item.needs].label}' is not confirmed, so this "
+                          "cannot be judged from the photo"})
+            checked[item.id] = {"answer": "unclear", "evidence": entry["evidence"],
+                                "source": "none"}
 
     checked["summary"] = str(raw.get("summary", "")).strip()
     return checked, downgrades
