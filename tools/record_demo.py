@@ -1,6 +1,6 @@
 """Record the narrated demo video of the real app with Playwright.
 
-    python tools/record_demo.py            # -> docs/post/lake-lookout-demo.mp4 (+ .gif)
+    python tools/record_demo.py            # -> docs/post/lake-lookout-demo.mp4 (+ .gif, .srt, .vtt)
 
 Everything on screen is the real app and the real local model: a day is
 created, the test-hunza files are added through the file input, Gemma 4
@@ -389,7 +389,10 @@ def main() -> int:
     mp4, gif = edit(raw, marks, clips)
     shutil.rmtree(OUT / "_raw", ignore_errors=True)
     shutil.rmtree(tmp, ignore_errors=True)
+    marks["durations"] = {k: round(c[1], 3) for k, c in clips.items()}
     (OUT / "demo-timeline.json").write_text(json.dumps(marks, indent=1), encoding="utf-8")
+    import make_subtitles                 # captions from the same timeline
+    make_subtitles.main()
     real = marks["processing_end"] - marks["processing_start"]
     print(f"processing took {real:.1f} s on this computer (sped up {marks['speedup']}x in the video)")
     for f in (mp4, gif):

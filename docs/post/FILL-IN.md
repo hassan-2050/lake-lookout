@@ -7,7 +7,9 @@
    image and demo link in the post points at it.
 2. **`[YOUR_YOUTUBE_OR_LOOM_URL]`**: upload `docs/post/lake-lookout-demo.mp4`
    (98 s, 1280×720, narrated) to YouTube (unlisted is fine) or Loom, and paste the link.
-   DEV embeds it with `{% embed ... %}`.
+   DEV embeds it with `{% embed ... %}`. Add the captions too: in YouTube Studio,
+   Subtitles → Add language (English) → Upload file → **With timing** →
+   `docs/post/lake-lookout-demo.srt`.
 3. **Taking it outside**: write it after your outing, using the structure
    inside the brackets. Use only what really happened. Add a screenshot of your
    own trip page to `docs/post/` and link it.

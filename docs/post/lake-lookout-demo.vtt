@@ -1,0 +1,98 @@
+WEBVTT
+
+00:00:00.090 --> 00:00:05.137
+In August 2024, a glacial lake above
+the village of Thame, in Nepal, burst.
+
+00:00:05.187 --> 00:00:08.942
+Satellites rarely see these
+lakes through monsoon cloud,
+
+00:00:08.992 --> 00:00:11.389
+but hikers walk past them every day.
+
+00:00:11.439 --> 00:00:16.943
+Lake Lookout turns a hike into a field
+log, on your own laptop, with no internet.
+
+00:00:17.410 --> 00:00:19.757
+In the evening, make a
+day for today's hike,
+
+00:00:20.220 --> 00:00:23.633
+and drop in the photos and
+voice notes from your phone.
+
+00:00:23.683 --> 00:00:27.600
+This demo uses a test day built
+from Wikimedia photos of Hunza,
+
+00:00:27.650 --> 00:00:29.351
+with synthetic voice notes.
+
+00:00:29.820 --> 00:00:31.584
+Now press the Process button.
+
+00:00:31.634 --> 00:00:34.086
+Gemma 4 runs right here, through Ollama,
+
+00:00:34.136 --> 00:00:39.015
+and the app blocks every network connection
+except the one to the local model.
+
+00:00:40.260 --> 00:00:43.439
+It transcribes each voice
+note, and reads every photo.
+
+00:00:45.860 --> 00:00:48.874
+The result is a field log:
+your route, every stop,
+
+00:00:48.924 --> 00:00:53.092
+and a checklist drawn from published
+glacial-lake hazard indicators.
+
+00:00:53.550 --> 00:00:57.854
+Every yes or no has to name its evidence:
+what the model saw in the photo,
+
+00:00:57.904 --> 00:00:59.104
+or what you said.
+
+00:00:59.380 --> 00:01:02.500
+Anything it can't actually
+see is marked as unclear.
+
+00:01:02.550 --> 00:01:03.750
+Never a silent no.
+
+00:01:04.110 --> 00:01:08.270
+When the photo and your voice note
+disagree, it shows both, and picks neither.
+
+00:01:09.260 --> 00:01:13.377
+Answers the model couldn't back up are
+downgraded, and the reason is kept.
+
+00:01:14.710 --> 00:01:16.331
+Photos open full size.
+
+00:01:17.880 --> 00:01:23.640
+Then share one page that works offline,
+plus CSV and GeoJSON for researchers.
+
+00:01:24.460 --> 00:01:26.209
+And there's a dark mode for the tent.
+
+00:01:26.680 --> 00:01:27.830
+Lake Lookout.
+
+00:01:27.880 --> 00:01:30.019
+Open weights, no signal needed.
+
+00:01:30.069 --> 00:01:32.209
+Field observations, not alerts.
+
+00:01:32.259 --> 00:01:36.285
+Even this voice is an open
+model, running on this laptop.
