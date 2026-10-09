@@ -1,0 +1,1008 @@
+{
+ "model": "gemma4:e2b",
+ "cpu_only": false,
+ "counts": {
+  "scored": 91,
+  "correct": 77,
+  "false_yes": 1,
+  "false_no": 7,
+  "too_cautious": 6,
+  "rejected": 19
+ },
+ "accuracy": 0.846,
+ "scope_accuracy": 0.294,
+ "latency_s": {
+  "total": 1.6,
+  "prompt": 0.13,
+  "generate": 1.44
+ },
+ "photos": {
+  "imja_tsho": {
+   "kind": "glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A body of water is visible in the middle ground."
+    },
+    "glacial_setting": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Large, snow-capped mountains are visible in the background, and there are rocky, debris-covered slopes in the foreground."
+    },
+    "glacier_contact": {
+     "label": "unclear",
+     "answer": "no",
+     "evidence": "Snow and ice are visible on the high peaks, but no direct contact with the visible water body."
+    },
+    "calving_icebergs": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible on the water."
+    },
+    "steep_slopes_above": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Steep, rocky slopes and mountains rise from the area surrounding the lake."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The slopes above the lake show evidence of erosion and debris."
+    },
+    "dam_in_view": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The far end of the lake is visible, but the outlet structure is not clearly defined."
+    },
+    "moraine_dam": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "The foreground is dominated by loose rock and debris, suggesting a moraine landscape."
+    },
+    "low_freeboard": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "The water level appears to be contained by the surrounding rocky terrain."
+    },
+    "steep_dam_face": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "The immediate banks appear steep and rocky."
+    },
+    "seepage_breach": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No visible breaches or seepage are apparent."
+    },
+    "downstream_in_view": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The area downstream of the lake outlet is not visible."
+    },
+    "downstream_people": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No trails, houses, bridges, or fields are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "moraine_dam",
+     "model_answer": "yes",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    },
+    {
+     "item": "seepage_breach",
+     "model_answer": "no",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    },
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'Downstream in view' is not confirmed, so this cannot be judged from the photo"
+    }
+   ],
+   "summary": "The photo shows a high-altitude landscape featuring a body of water surrounded by rocky terrain and backed by large, snow-capped mountains. The foreground consists of loose rock and debris, suggesting a glacial or moraine environment.",
+   "timings": {
+    "total_s": 8.16,
+    "load_s": 6.15,
+    "prompt_s": 0.35,
+    "generate_s": 1.63,
+    "prompt_tokens": 881,
+    "output_tokens": 534
+   }
+  },
+  "tsho_rolpa": {
+   "kind": "glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A large body of water is visible."
+    },
+    "glacial_setting": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Large, snow-capped mountains are visible in the background."
+    },
+    "glacier_contact": {
+     "label": "unclear",
+     "answer": "no",
+     "evidence": "No visible glacier ice touching the water."
+    },
+    "calving_icebergs": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible on the water."
+    },
+    "steep_slopes_above": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Steep, vegetated slopes rise up from the lake shore."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The slopes appear rugged, but no distinct fresh rockfall or landslide scars are clearly visible."
+    },
+    "dam_in_view": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The far end of the lake is visible, bordered by mountains."
+    },
+    "moraine_dam": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "The far side of the lake is bordered by mountains, suggesting a natural dam structure, but a distinct moraine dam is not clearly identifiable."
+    },
+    "low_freeboard": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a clear dam structure is not visible."
+    },
+    "steep_dam_face": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a clear dam structure is not visible."
+    },
+    "seepage_breach": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a clear dam structure is not visible."
+    },
+    "downstream_in_view": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The area downstream of the lake outlet is not visible."
+    },
+    "downstream_people": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No trails, houses, bridges, or fields are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'no' given with no source"
+    }
+   ],
+   "summary": "The photo shows a large body of water in a valley with imposing, snow-capped mountains in the background. The immediate shoreline features steep slopes.",
+   "timings": {
+    "total_s": 1.76,
+    "load_s": 0.01,
+    "prompt_s": 0.18,
+    "generate_s": 1.52,
+    "prompt_tokens": 965,
+    "output_tokens": 511
+   }
+  },
+  "gokyo": {
+   "kind": "glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A body of turquoise water is visible."
+    },
+    "glacial_setting": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A large glacier is visible in the background, and a large expanse of glacial ice/debris is visible to the left."
+    },
+    "glacier_contact": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The turquoise water is adjacent to a large expanse of glacial debris/ice."
+    },
+    "calving_icebergs": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible on the water."
+    },
+    "steep_slopes_above": {
+     "label": "yes",
+     "answer": "no",
+     "evidence": "The immediate slopes surrounding the lake are rocky and uneven, but no immediate steep rock walls rising directly from the shore are prominent."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "The foreground consists of rocky, barren terrain."
+    },
+    "dam_in_view": {
+     "label": "yes",
+     "answer": "unclear",
+     "evidence": "The outlet or end of the lake where water flows out is not visible."
+    },
+    "moraine_dam": {
+     "label": "yes",
+     "answer": "unclear",
+     "evidence": "The lake appears to be situated within a valley shaped by glacial activity, suggesting a moraine setting, but a distinct moraine dam structure is not clearly visible."
+    },
+    "low_freeboard": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a dam structure is not clearly visible."
+    },
+    "steep_dam_face": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a dam structure is not clearly visible."
+    },
+    "seepage_breach": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a dam structure is not clearly visible."
+    },
+    "downstream_in_view": {
+     "label": "yes",
+     "answer": "unclear",
+     "evidence": "The area downstream of the lake outlet is not visible."
+    },
+    "downstream_people": {
+     "label": "yes",
+     "answer": "unclear",
+     "evidence": "Two people are visible near the shore in the foreground."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'Downstream in view' is not confirmed, so this cannot be judged from the photo"
+    }
+   ],
+   "summary": "The photo shows a vibrant turquoise lake situated in a rugged, high-altitude environment with large glaciers visible in the background. Two hikers are visible near the shore in the foreground.",
+   "timings": {
+    "total_s": 1.81,
+    "load_s": 0.01,
+    "prompt_s": 0.12,
+    "generate_s": 1.61,
+    "prompt_tokens": 923,
+    "output_tokens": 543
+   }
+  },
+  "palcacocha": {
+   "kind": "glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A body of turquoise water is visible."
+    },
+    "glacial_setting": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Glacier ice and bare moraine ridges are visible in the background."
+    },
+    "glacier_contact": {
+     "label": "unclear",
+     "answer": "no",
+     "evidence": "Glacier ice is visible surrounding the lake."
+    },
+    "calving_icebergs": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible."
+    },
+    "steep_slopes_above": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Steep, rocky slopes and ice fields rise directly from the lake area."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The slopes above show evidence of glacial activity and rock debris."
+    },
+    "dam_in_view": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The far end of the lake is visible, but the outlet structure is not clearly defined."
+    },
+    "moraine_dam": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "The surrounding terrain suggests glacial deposition, but a distinct moraine dam is not clearly identifiable."
+    },
+    "low_freeboard": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, dam structure is unclear."
+    },
+    "steep_dam_face": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "The downstream face of any potential dam is not clearly visible."
+    },
+    "seepage_breach": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No visible seepage or breach in a dam is apparent."
+    },
+    "downstream_in_view": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The area downstream of the lake outlet is not visible."
+    },
+    "downstream_people": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No trails, houses, bridges, or fields are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "seepage_breach",
+     "model_answer": "no",
+     "reason": "'no' given with no source"
+    },
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'no' given with no source"
+    }
+   ],
+   "summary": "The photo shows a turquoise lake surrounded by steep, icy, and rocky terrain indicative of a glacial environment.",
+   "timings": {
+    "total_s": 1.58,
+    "load_s": 0.0,
+    "prompt_s": 0.11,
+    "generate_s": 1.45,
+    "prompt_tokens": 717,
+    "output_tokens": 488
+   }
+  },
+  "jokulsarlon": {
+   "kind": "glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Water is visible in the foreground."
+    },
+    "glacial_setting": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Large chunks of ice are floating in the water, and large glaciers/ice caps are visible in the background."
+    },
+    "glacier_contact": {
+     "label": "skip",
+     "answer": "yes",
+     "evidence": "Icebergs are floating in the water."
+    },
+    "calving_icebergs": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Numerous large icebergs are floating in the water."
+    },
+    "steep_slopes_above": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "Mountains and glaciers are visible in the background, but no steep rock walls rise directly from the lake shore."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "No fresh rockfall or landslide scars are visible on the slopes above the lake."
+    },
+    "dam_in_view": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No dam structure is visible."
+    },
+    "moraine_dam": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No moraine dam is visible."
+    },
+    "low_freeboard": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "steep_dam_face": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "seepage_breach": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "downstream_in_view": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The land below the lake's outlet is not visible."
+    },
+    "downstream_people": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No trails, houses, bridges or fields are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "moraine_dam",
+     "model_answer": "no",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    },
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'Downstream in view' is not confirmed, so this cannot be judged from the photo"
+    }
+   ],
+   "summary": "The scene features water in the foreground with numerous icebergs floating on it, set against a backdrop of large mountains and glaciers under cloudy skies.",
+   "timings": {
+    "total_s": 1.58,
+    "load_s": 0.01,
+    "prompt_s": 0.12,
+    "generate_s": 1.41,
+    "prompt_tokens": 902,
+    "output_tokens": 480
+   }
+  },
+  "tasman": {
+   "kind": "glacier_no_lake",
+   "items": {
+    "water_body": {
+     "label": "no",
+     "answer": "yes",
+     "evidence": "A wide, elongated body of ice/snow is visible in the valley floor."
+    },
+    "glacial_setting": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Large glaciers and snowfields are visible in the background, and a large expanse of ice is in the valley."
+    },
+    "glacier_contact": {
+     "label": "skip",
+     "answer": "yes",
+     "evidence": "The ice appears to flow down a valley floor, suggesting contact with the terrain."
+    },
+    "calving_icebergs": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible."
+    },
+    "steep_slopes_above": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "Steep, rocky slopes and snow-covered mountains surround the valley."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The slopes show evidence of erosion and debris, but no distinct fresh rockfall scars are clearly visible near the ice."
+    },
+    "dam_in_view": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The ice/snow feature extends far into the distance, but a distinct dam structure is not clearly identifiable."
+    },
+    "moraine_dam": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The feature appears to be a large, flowing ice/snow field rather than a distinct moraine dam."
+    },
+    "low_freeboard": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a clear dam structure is not visible."
+    },
+    "steep_dam_face": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a clear dam structure is not visible."
+    },
+    "seepage_breach": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a clear dam structure is not visible."
+    },
+    "downstream_in_view": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The view is focused on the valley floor and mountains; the area below the ice flow is not visible."
+    },
+    "downstream_people": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "No trails, houses, bridges, or fields are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "moraine_dam",
+     "model_answer": "no",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    },
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'Downstream in view' is not confirmed, so this cannot be judged from the photo"
+    }
+   ],
+   "summary": "The photo shows a deep glacial valley with a wide expanse of ice or snow filling the valley floor, surrounded by steep, snow-capped mountains.",
+   "timings": {
+    "total_s": 2.06,
+    "load_s": 0.03,
+    "prompt_s": 0.13,
+    "generate_s": 1.85,
+    "prompt_tokens": 965,
+    "output_tokens": 550
+   }
+  },
+  "mueller": {
+   "kind": "glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A body of water is visible in the foreground, with some smaller pools or meltwater visible in the grey expanse."
+    },
+    "glacial_setting": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A large, grey, barren expanse of rock/debris is visible in the foreground, consistent with a glacial outwash plain or moraine."
+    },
+    "glacier_contact": {
+     "label": "yes",
+     "answer": "no",
+     "evidence": "No visible glacier ice touching the water."
+    },
+    "calving_icebergs": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible on the water."
+    },
+    "steep_slopes_above": {
+     "label": "yes",
+     "answer": "no",
+     "evidence": "Steep, rugged, snow-capped mountains rise in the background, but no immediate steep rock walls directly above the foreground water body."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "The foreground is a wide, grey, rocky plain, not showing fresh rockfall scars directly above the water."
+    },
+    "dam_in_view": {
+     "label": "yes",
+     "answer": "unclear",
+     "evidence": "The foreground appears to be a broad, relatively flat expanse of debris/rock, not clearly showing a distinct dam structure."
+    },
+    "moraine_dam": {
+     "label": "yes",
+     "answer": "unclear",
+     "evidence": "The foreground is a wide, grey, rocky expanse, which is consistent with a moraine or outwash plain."
+    },
+    "low_freeboard": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a clear dam structure is not visible."
+    },
+    "steep_dam_face": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as a clear dam structure is not visible."
+    },
+    "seepage_breach": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No visible seepage or breach in a dam face."
+    },
+    "downstream_in_view": {
+     "label": "yes",
+     "answer": "unclear",
+     "evidence": "The view is focused on the foreground plain; the area downstream of this immediate feature is not visible."
+    },
+    "downstream_people": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "No trails, houses, bridges, or fields are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "moraine_dam",
+     "model_answer": "yes",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    },
+    {
+     "item": "seepage_breach",
+     "model_answer": "no",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    },
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'Downstream in view' is not confirmed, so this cannot be judged from the photo"
+    }
+   ],
+   "summary": "The photo shows a wide, grey, rocky expanse in the foreground, likely a glacial outwash plain. In the background, there are large, rugged, snow-capped mountains surrounding a valley.",
+   "timings": {
+    "total_s": 2.04,
+    "load_s": 0.01,
+    "prompt_s": 0.14,
+    "generate_s": 1.84,
+    "prompt_tokens": 965,
+    "output_tokens": 580
+   }
+  },
+  "attabad": {
+   "kind": "not_glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Large body of turquoise water is visible."
+    },
+    "glacial_setting": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "Large, steep, rocky mountains surround the lake."
+    },
+    "glacier_contact": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No visible glacier ice touching the water."
+    },
+    "calving_icebergs": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible."
+    },
+    "steep_slopes_above": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Very steep, rocky mountain slopes rise directly from the lake shore."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The slopes appear rugged with visible rock formations."
+    },
+    "dam_in_view": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "The far end of the lake is surrounded by high mountains, but no distinct dam structure is visible."
+    },
+    "moraine_dam": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "The lake appears nestled between high, steep rock walls."
+    },
+    "low_freeboard": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam visible."
+    },
+    "steep_dam_face": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam visible."
+    },
+    "seepage_breach": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam visible."
+    },
+    "downstream_in_view": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "The area downstream of the lake outlet is not visible."
+    },
+    "downstream_people": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No trails, houses, bridges, or fields are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'no' given with no source"
+    }
+   ],
+   "summary": "The photo shows a large, turquoise lake surrounded by very steep, rugged mountains. A few small boats are visible on the water.",
+   "timings": {
+    "total_s": 1.61,
+    "load_s": 0.01,
+    "prompt_s": 0.13,
+    "generate_s": 1.42,
+    "prompt_tokens": 965,
+    "output_tokens": 469
+   }
+  },
+  "rawal": {
+   "kind": "not_glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A body of water is visible in the foreground."
+    },
+    "glacial_setting": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No glacier ice or bare moraine ridges are visible."
+    },
+    "glacier_contact": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No glacier ice is visible."
+    },
+    "calving_icebergs": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible."
+    },
+    "steep_slopes_above": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "Mountains are visible in the background, but no steep rock walls rise directly from the lake shore."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "The slopes above the lake are covered in vegetation and appear relatively smooth, with no obvious fresh rockfall scars."
+    },
+    "dam_in_view": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No dam structure is visible."
+    },
+    "moraine_dam": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No moraine dam is visible."
+    },
+    "low_freeboard": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as no dam is visible."
+    },
+    "steep_dam_face": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as no dam is visible."
+    },
+    "seepage_breach": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "Not applicable, as no dam is visible."
+    },
+    "downstream_in_view": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The land beyond the water is visible, but the outlet or flow path is not clearly defined."
+    },
+    "downstream_people": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Fields and vegetation are visible beyond the water, but no people are visible."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "moraine_dam",
+     "model_answer": "no",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    },
+    {
+     "item": "downstream_people",
+     "model_answer": "no",
+     "reason": "'Downstream in view' is not confirmed, so this cannot be judged from the photo"
+    }
+   ],
+   "summary": "The photo shows a body of water in the foreground with grassy banks, set against a backdrop of rolling, vegetated mountains under a clear sky.",
+   "timings": {
+    "total_s": 1.6,
+    "load_s": 0.01,
+    "prompt_s": 0.12,
+    "generate_s": 1.43,
+    "prompt_tokens": 881,
+    "output_tokens": 487
+   }
+  },
+  "pond": {
+   "kind": "not_glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "A body of water is visible."
+    },
+    "glacial_setting": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "Water has a brownish/murky color, not milky or turquoise."
+    },
+    "glacier_contact": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No glacier ice is visible."
+    },
+    "calving_icebergs": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible."
+    },
+    "steep_slopes_above": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "Grassy banks and low embankments are visible, not steep rock walls."
+    },
+    "fresh_scars_above": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No fresh rockfall or landslide scars are visible."
+    },
+    "dam_in_view": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "No dam structure is visible."
+    },
+    "moraine_dam": {
+     "label": "no",
+     "answer": "unclear",
+     "evidence": "No moraine dam is visible."
+    },
+    "low_freeboard": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "steep_dam_face": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "seepage_breach": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "downstream_in_view": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "The area downstream of the water is visible, featuring grassy banks and trees."
+    },
+    "downstream_people": {
+     "label": "yes",
+     "answer": "no",
+     "evidence": "No people are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "moraine_dam",
+     "model_answer": "no",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    }
+   ],
+   "summary": "The photo shows a calm body of water bordered by grassy banks and trees. There is a structure in the background that appears to be a building or tower.",
+   "timings": {
+    "total_s": 1.53,
+    "load_s": 0.02,
+    "prompt_s": 0.13,
+    "generate_s": 1.34,
+    "prompt_tokens": 923,
+    "output_tokens": 456
+   }
+  },
+  "reservoir": {
+   "kind": "not_glacial",
+   "items": {
+    "water_body": {
+     "label": "yes",
+     "answer": "yes",
+     "evidence": "Large body of dark water is visible."
+    },
+    "glacial_setting": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No glacier ice or bare moraine ridges are visible."
+    },
+    "glacier_contact": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No glacier ice is visible."
+    },
+    "calving_icebergs": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No icebergs or ice cliffs are visible."
+    },
+    "steep_slopes_above": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "Rolling, vegetated hills surround the water body."
+    },
+    "fresh_scars_above": {
+     "label": "skip",
+     "answer": "no",
+     "evidence": "Vegetated slopes are visible above the water."
+    },
+    "dam_in_view": {
+     "label": "no",
+     "answer": "no",
+     "evidence": "No dam structure is visible."
+    },
+    "moraine_dam": {
+     "label": "unclear",
+     "answer": "unclear",
+     "evidence": "No moraine dam is visible."
+    },
+    "low_freeboard": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "steep_dam_face": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "seepage_breach": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "Not applicable, no dam is visible."
+    },
+    "downstream_in_view": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "The view downstream of the lake outlet is not visible."
+    },
+    "downstream_people": {
+     "label": "skip",
+     "answer": "unclear",
+     "evidence": "No trails, houses, bridges or fields are visible downstream."
+    }
+   },
+   "downgrades": [
+    {
+     "item": "moraine_dam",
+     "model_answer": "no",
+     "reason": "'Dam or outlet in view' is not confirmed, so this cannot be judged from the photo"
+    }
+   ],
+   "summary": "The photo shows a large body of dark water surrounded by rolling, vegetated hills and mountains.",
+   "timings": {
+    "total_s": 1.46,
+    "load_s": 0.01,
+    "prompt_s": 0.13,
+    "generate_s": 1.28,
+    "prompt_tokens": 923,
+    "output_tokens": 440
+   }
+  }
+ },
+ "labels_reviewed_by_human": false
+}

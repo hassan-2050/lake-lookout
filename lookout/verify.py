@@ -33,14 +33,15 @@ import re
 from .checklist import ANSWERS, BY_ID, ITEM_IDS, ITEMS
 
 # Evidence strings that say nothing. Compared after lower-casing and stripping
-# punctuation.
+# punctuation. "yes" and "no" are here because the model sometimes repeats the
+# answer as its evidence (seen on a village photo with no water in it).
 _EMPTY_EVIDENCE = {"", "n/a", "na", "none", "nothing", "unknown", "not visible",
-                   "not applicable", "-", "unclear"}
+                   "not applicable", "-", "unclear", "yes", "no"}
 
 
 _CANNOT_SEE = re.compile(
-    r"(can'?t|cannot|could ?n'?t|could not|unable to) see|"
-    r"out of (view|frame|sight)|not in (view|frame|the photo)")
+    r"\b(can'?t|cannot|could ?n'?t|could not|unable to) see\b|"
+    r"\bout of (view|frame|sight)\b|\bnot in (view|frame|the photo)\b")
 
 # Fraction of the evidence's words that must occur in the transcript for a
 # quote from the voice note to count as a quote.
@@ -70,7 +71,10 @@ def _voice_problem(item_id: str, evidence: str, transcript: str) -> str | None:
     if words and len(words & _words(transcript)) / len(words) < VOICE_OVERLAP:
         return "evidence attributed to the voice note is not in the transcript"
     keywords = BY_ID[item_id].keywords
-    if keywords and not any(k in _norm(evidence) for k in keywords):
+    # Matched at the start of a word, so "ice" does not match "nice" or "price"
+    # and stems like "calv" still match "calving".
+    text = _norm(evidence)
+    if keywords and not any(re.search(r"\b" + re.escape(k), text) for k in keywords):
         return "voice evidence is not about this question"
     return None
 

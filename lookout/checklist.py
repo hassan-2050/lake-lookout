@@ -47,7 +47,7 @@ ITEMS: tuple[Item, ...] = (
          "Is this a glacial setting, with glacier ice or bare moraine ridges in "
          "view? Milky or turquoise water alone is not enough: rivers carry that "
          "colour far from any glacier.",
-         keywords=('glacier', 'ice', 'moraine', 'ridge', 'snout', 'debris')),
+         keywords=('glacier', 'ice', 'moraine', 'snout', 'debris', 'crevass')),
     Item("glacier_contact", "Glacier touches water",
          "Does glacier ice touch the water, or end very close to it?",
          "Rounce et al. 2016, HESS 20:3455 (mother glacier within 600 m)",

@@ -257,7 +257,9 @@ function niceStep(span, n) {
 function mapSvg(stops) {
   const pts = stops.filter((s) => s.lat != null);
   if (!pts.length) return `<p class="nogps">No stop has a GPS position. Turn on location for the camera to see a map.</p>`;
-  const W = 900, H = 380, pad = 46;
+  // Draw at the size it will be shown, so labels stay readable on a phone.
+  const avail = Math.max(320, Math.min(900, (($("#main") || {}).clientWidth || 900) - 70));
+  const W = Math.round(avail), H = Math.round(W < 600 ? W * 0.85 : 380), pad = W < 600 ? 34 : 46;
   const lat0 = pts.reduce((a, s) => a + s.lat, 0) / pts.length;
   const k = Math.cos(lat0 * Math.PI / 180);
   const minX = Math.min(...pts.map((s) => s.lon * k)), maxX = Math.max(...pts.map((s) => s.lon * k));
@@ -289,11 +291,26 @@ function mapSvg(stops) {
   const label = km >= 1 ? `${km} km` : `${Math.round(km * 1000)} m`;
 
   const route = pts.map((s) => `${X(s.lon).toFixed(1)},${Y(s.lat).toFixed(1)}`).join(" ");
-  const pins = pts.map((s) => `
-    <g class="pin ${state.selected === s.id ? "sel" : ""}" data-stop="${esc(s.id)}" tabindex="0" role="button" aria-label="Stop ${esc(s.id)}">
-      <circle cx="${X(s.lon).toFixed(1)}" cy="${Y(s.lat).toFixed(1)}" r="13" fill="${pinClass(s)}"/>
-      <text x="${X(s.lon).toFixed(1)}" y="${(Y(s.lat) + 3.8).toFixed(1)}">${esc(s.id.replace(/^S0?/, ""))}</text>
-    </g>`).join("");
+  // Stops a few hundred metres apart would hide each other's pins. Each pin
+  // that lands on an earlier one steps outwards around a circle, and a thin
+  // leader keeps a dot on its true position.
+  const placed = [];
+  const pins = pts.map((s) => {
+    const tx = X(s.lon), ty = Y(s.lat);
+    let px = tx, py = ty;
+    for (let step = 0; placed.some(([x, y]) => Math.hypot(x - px, y - py) < 27) && step < 24; step++) {
+      const ang = -Math.PI / 2 + step * (Math.PI / 4);
+      const rad = 30 * (1 + Math.floor(step / 8));
+      px = tx + rad * Math.cos(ang); py = ty + rad * Math.sin(ang);
+    }
+    placed.push([px, py]);
+    const moved = px !== tx || py !== ty;
+    return `<g class="pin ${state.selected === s.id ? "sel" : ""}" data-stop="${esc(s.id)}" tabindex="0" role="button" aria-label="Stop ${esc(s.id)}">
+      ${moved ? `<line class="leader" x1="${tx.toFixed(1)}" y1="${ty.toFixed(1)}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}"/><circle class="dot" cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="3"/>` : ""}
+      <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="13" fill="${pinClass(s)}"/>
+      <text x="${px.toFixed(1)}" y="${(py + 3.8).toFixed(1)}">${esc(s.id.replace(/^S0?/, ""))}</text>
+    </g>`;
+  }).join("");
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Map of the day's stops">
     <g class="grid">${grid}</g>
     ${pts.length > 1 ? `<polyline class="route" points="${route}"/>` : ""}
@@ -326,7 +343,7 @@ function card(s) {
   const day = state.day;
   const glacial = s.checklist && (s.checklist.glacial_setting || {}).answer === "yes";
   const media = s.photos.length
-    ? `<img class="main" loading="lazy" src="${thumb(s.photos[0], 640)}" alt="Photo from stop ${esc(s.id)}" data-action="zoom" data-photo="${esc(s.photos[0])}">
+    ? `<img class="main" src="${thumb(s.photos[0], 640)}" alt="Photo from stop ${esc(s.id)}" data-action="zoom" data-photo="${esc(s.photos[0])}">
        ${s.photos.length > 1 ? `<div class="strip">${s.photos.slice(1).map((p) =>
          `<img loading="lazy" src="${thumb(p, 160)}" alt="" data-action="zoom" data-photo="${esc(p)}">`).join("")}</div>` : ""}`
     : `<div class="nophoto">No photo at this stop.<br>Observations come from the voice note.</div>`;
@@ -343,24 +360,37 @@ function card(s) {
   if (s.error) {
     body = `<p class="err-text">Not processed: ${esc(s.error)}</p>`;
   } else {
-    const rows = state.health.checklist.map((it) => {
+    const row = (it) => {
       const a = s.checklist[it.id] || { answer: "unclear", evidence: "", source: "none" };
       const key = `${s.id}:${it.id}`;
       const open = state.open.has(key);
       const conflict = conflicts.includes(it.id);
-      const ev = a.evidence ? `<em>${esc(a.evidence)}</em>${a.source && a.source !== "none" ? ` (${esc(a.source)})` : ""}` : "No evidence either way.";
+      const ev = a.evidence ? `<em>${esc(a.evidence)}</em>${a.source && a.source !== "none" ? ` (${esc(a.source)})` : ""}` : "Not visible in the photo and not mentioned.";
       const gate = it.needs ? `<br>Judged from a photo only when “${esc(item(it.needs).label)}” is yes; your own words can always answer it.` : "";
       return `<div class="chip-row ${isScope(it.id) ? "scope" : ""}" role="button" tabindex="0" aria-expanded="${open}" data-action="toggle" data-key="${esc(key)}">
-        <span class="lab">${esc(it.label)}${conflict ? ` <small>⚠ disagreement</small>` : ""}</span>
+        <span class="lab">${esc(it.label)}${conflict ? ` <small>⚠ photo and voice disagree</small>` : ""}</span>
         <span class="chip ${esc(a.answer)}">${esc(a.answer)}</span>
-        <span class="more">${conflict ? "" : ""}${ev}<br><small>${esc(it.source)}</small>${gate}</span>
+        <span class="more">${ev}<br><small>${esc(it.source)}</small>${gate}</span>
       </div>`;
-    }).join("");
+    };
+    // Observations first; what could not be judged is folded into one line,
+    // so a stop reads as what was seen rather than a wall of "unclear".
+    const answer = (it) => (s.checklist[it.id] || {}).answer;
+    const seen = state.health.checklist.filter((it) => answer(it) !== "unclear" || conflicts.includes(it.id));
+    const notJudged = state.health.checklist.filter((it) => !seen.includes(it));
+    const foldKey = `${s.id}:unclear`;
+    const folded = notJudged.length ? `
+      <div class="fold">
+        <button class="fold-btn" data-action="fold" data-key="${esc(foldKey)}" aria-expanded="${state.open.has(foldKey)}">
+          <span class="chip unclear">${notJudged.length} unclear</span>
+          <span class="names">${esc(notJudged.map((it) => it.label).join(" · "))}</span></button>
+        <div class="fold-body" ${state.open.has(foldKey) ? "" : "hidden"}>${notJudged.map(row).join("")}</div>
+      </div>` : "";
     const down = (s.downgrades || []);
     body = `
       ${s.transcript ? `<blockquote class="quote">${esc(s.transcript)}</blockquote>` : ""}
       ${s.checklist.summary ? `<p class="summary">${esc(s.checklist.summary)}</p>` : ""}
-      <div class="checks">${rows}</div>
+      <div class="checks">${seen.map(row).join("") || `<p class="nogps">Nothing could be judged at this stop.</p>`}${folded}</div>
       ${down.length ? `<details class="down"><summary>${down.length} answer(s) from the model were not supported and were changed to unclear</summary>
         <ul>${down.map((x) => `<li>${esc(item(x.item).label)} (${esc(x.pass || "")}): the model said <b>${esc(x.model_answer ?? "nothing")}</b>; ${esc(x.reason)}</li>`).join("")}</ul></details>` : ""}`;
   }
@@ -394,6 +424,12 @@ function renderProgress() {
   const pct = total ? Math.round(100 * doneN / total) : 0;
   const icon = { wait: "·", now: '<span class="spinner"></span>', done: "✓", err: "✕" };
   const last = state.events[state.events.length - 1];
+  if (finished && state.data && state.data.result) {
+    // Once the result is on screen, the per-stop list has done its job.
+    const failed = Object.values(st).filter((x) => x.state === "err").length;
+    el.innerHTML = `<div class="notice ${failed ? "err" : "done"}" role="status">✓ Processed ${total} stop(s) in ${finished.seconds} s on this computer${failed ? `; ${failed} could not be processed and are marked below` : ""}.</div>`;
+    return;
+  }
   el.innerHTML = `<section class="progress panel" aria-live="polite">
     <h3>${finished ? "Processed" : error ? "Stopped" : "Processing on this computer"}
       <span>${finished ? `${finished.seconds} s` : `${doneN} of ${total} stops · ${last ? last.t : 0} s`}</span></h3>
@@ -508,6 +544,13 @@ function onClick(e) {
     }
     case "process": process(); break;
     case "filter": state.filter = t.dataset.filter; renderDay(); break;
+    case "fold": {
+      const k = t.dataset.key;
+      state.open.has(k) ? state.open.delete(k) : state.open.add(k);
+      t.setAttribute("aria-expanded", state.open.has(k));
+      t.nextElementSibling.hidden = !state.open.has(k);
+      break;
+    }
     case "toggle": {
       const k = t.dataset.key;
       state.open.has(k) ? state.open.delete(k) : state.open.add(k);
@@ -542,4 +585,9 @@ function selectStop(id) {
 }
 
 $("#lightbox").addEventListener("click", (e) => { if (e.target.id === "lightbox") e.currentTarget.hidden = true; });
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (state.data && state.data.result) renderDay(); }, 250);
+});
 boot();

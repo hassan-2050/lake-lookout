@@ -11,3 +11,5 @@ __pycache__/
 trips/*
 !trips/.gitkeep
 !trips/synthetic-day/
+!trips/test-hunza/
+!trips/test-skardu/

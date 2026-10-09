@@ -48,7 +48,7 @@ a { color: var(--accent); }
 .pill.ok i { background: #2aa876; } .pill.bad i { background: var(--err); } .pill.bad { color: var(--err); }
 
 /* ---- layout ---------------------------------------------------------- */
-.layout { display: grid; grid-template-columns: 270px 1fr; min-height: calc(100vh - 57px); }
+.layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); min-height: calc(100vh - 57px); }
 .side { border-right: 1px solid var(--line); padding: 18px 14px; background: var(--panel-2); }
 .side-head { display: flex; align-items: center; justify-content: space-between; margin: 0 4px 12px; }
 .side-head h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
@@ -140,6 +140,8 @@ main { padding: 26px 32px 80px; max-width: 1180px; width: 100%; outline: none; }
 .map .route { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 5; opacity: .8; }
 .map .pin circle { stroke: var(--panel); stroke-width: 2.5; cursor: pointer; }
 .map .pin.sel circle { stroke: var(--ink); stroke-width: 3; }
+.map .pin .leader { stroke: var(--muted); stroke-width: 1.2; }
+.map .pin circle.dot { fill: var(--ink); stroke: none; }
 .map .pin text { fill: #fff; font: 700 10.5px system-ui; text-anchor: middle; pointer-events: none; }
 .map .scale line { stroke: var(--muted); stroke-width: 1.5; }
 .map .scale text, .map .north text { fill: var(--muted); font-size: 11px; }
@@ -155,7 +157,7 @@ main { padding: 26px 32px 80px; max-width: 1180px; width: 100%; outline: none; }
 
 /* ---- stop cards ------------------------------------------------------ */
 .stops { display: flex; flex-direction: column; gap: 16px; }
-.card { display: grid; grid-template-columns: 300px 1fr; overflow: hidden; scroll-margin-top: 80px; }
+.card { display: grid; grid-template-columns: 300px minmax(0, 1fr); overflow: hidden; scroll-margin-top: 80px; }
 .card.sel { outline: 2px solid var(--accent); }
 .card .media { background: var(--panel-2); border-right: 1px solid var(--line); display: flex; flex-direction: column; }
 .card .media .main { aspect-ratio: 4 / 3; width: 100%; object-fit: cover; cursor: zoom-in; display: block; background: var(--line-2); }
@@ -215,14 +217,26 @@ details.down summary { cursor: pointer; }
 
 /* ---- small screens --------------------------------------------------- */
 @media (max-width: 860px) {
-  .layout { grid-template-columns: 1fr; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
   .side { border-right: 0; border-bottom: 1px solid var(--line); padding: 12px 16px; }
   #days { flex-direction: row; overflow-x: auto; }
   .day-link { min-width: 170px; }
   main { padding: 18px 16px 60px; }
-  .card { grid-template-columns: 1fr; }
+  .card { grid-template-columns: minmax(0, 1fr); }
   .card .media { border-right: 0; border-bottom: 1px solid var(--line); }
   .steps { grid-template-columns: 1fr; }
   .pills .pill.ok { display: none; }
   .actions { margin-left: 0; }
 }
+
+/* ---- folded "not judged" items --------------------------------------- */
+.fold { border-bottom: 1px solid var(--line-2); }
+.fold-btn {
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: none;
+  border: 0; padding: 7px 4px; cursor: pointer; color: var(--muted); font-size: 13px; border-radius: 6px;
+}
+.fold-btn:hover { background: var(--panel-2); }
+.fold-btn .names { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fold-btn[aria-expanded="true"] .names { white-space: normal; }
+.fold-body { padding-left: 10px; border-left: 2px solid var(--line-2); margin: 0 0 6px 6px; }
+.notice.done { background: var(--yes-bg); color: var(--yes); }

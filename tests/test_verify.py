@@ -46,6 +46,13 @@ def test_citing_a_photo_that_does_not_exist_is_rejected():
     assert checked["glacier_contact"]["answer"] == "unclear"
 
 
+def test_answer_repeated_as_evidence_is_no_evidence():
+    raw = _raw(water_body={"answer": "no", "evidence": "No.", "source": "photo"})
+    checked, down = verify(raw, has_photo=True, has_voice=False)
+    assert checked["water_body"]["answer"] == "unclear"
+    assert "no evidence" in down[0]["reason"]
+
+
 def test_answer_with_no_source_is_rejected():
     raw = _raw(water_body={"answer": "yes", "evidence": "a lake", "source": "none"})
     checked, _ = verify(raw, has_photo=True, has_voice=False)
@@ -116,6 +123,16 @@ def test_one_voice_sentence_cannot_answer_unrelated_questions():
     assert "not about this question" in down[0]["reason"]
 
 
+def test_keywords_match_whole_word_starts():
+    """'ice' must not match 'nice'; a fort on a ridge is not a glacial setting."""
+    note = "A nice view of the fort on the ridge above the town."
+    raw = _raw(calving_icebergs={"answer": "no", "evidence": "A nice view", "source": "voice"},
+               glacial_setting={"answer": "no", "evidence": "the fort on the ridge", "source": "voice"})
+    checked, _ = verify(raw, has_photo=False, has_voice=True, transcript=note)
+    assert checked["calving_icebergs"]["answer"] == "unclear"
+    assert checked["glacial_setting"]["answer"] == "unclear"
+
+
 def test_voice_evidence_must_be_in_the_transcript():
     raw = _raw(calving_icebergs={"answer": "yes", "evidence": "icebergs drifting by the shore",
                                  "source": "voice"})
@@ -125,11 +142,14 @@ def test_voice_evidence_must_be_in_the_transcript():
 
 
 def test_cannot_see_is_unclear_not_no():
-    raw = _raw(downstream_people={"answer": "no", "source": "voice",
-                                  "evidence": "I can't see the far end of the lake from here"})
-    checked, _ = verify(raw, has_photo=True, has_voice=True,
-                        transcript="I can't see the far end of the lake from here.")
+    # The evidence names houses, so only the cannot-see rule can reject it.
+    # (A first version of this test passed through the keyword rule instead,
+    # while the cannot-see pattern was broken and matched nothing.)
+    note = "I can't see the houses downstream from here."
+    raw = _raw(downstream_people={"answer": "no", "source": "voice", "evidence": note})
+    checked, down = verify(raw, has_photo=True, has_voice=True, transcript=note)
     assert checked["downstream_people"]["answer"] == "unclear"
+    assert down[0]["reason"] == "the evidence says this part cannot be seen"
 
 
 def test_both_as_a_source_does_not_bypass_the_view_check():
@@ -140,11 +160,11 @@ def test_both_as_a_source_does_not_bypass_the_view_check():
 
 
 def test_curly_apostrophe_in_cannot_see_is_caught():
-    raw = _raw(downstream_people={"answer": "no", "source": "voice",
-                                  "evidence": "I can’t see the far end of the lake"})
-    checked, _ = verify(raw, has_photo=False, has_voice=True,
-                        transcript="I can’t see the far end of the lake")
+    note = "I can’t see the houses downstream from here."
+    raw = _raw(downstream_people={"answer": "no", "source": "voice", "evidence": note})
+    checked, down = verify(raw, has_photo=False, has_voice=True, transcript=note)
     assert checked["downstream_people"]["answer"] == "unclear"
+    assert down[0]["reason"] == "the evidence says this part cannot be seen"
 
 
 def test_cannot_see_answers_the_in_view_questions():

@@ -46,16 +46,47 @@ ollama pull gemma4:e4b            # or gemma4:e2b for a laptop without a GPU
 python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # Windows
 # python -m venv .venv && .venv/bin/pip install -r requirements.txt     # macOS/Linux
 
-# Copy the day's photos and voice memos from your phone into one folder, then:
-python -m lookout process trips/2026-10-10
-# -> trips/2026-10-10/lookout_out/trip.html
+python -m lookout ui              # the app, in your browser at http://127.0.0.1:8765
+```
 
+![Lake Lookout app: a processed day in Hunza with its route map and stop cards](docs/screenshots/04-result.png)
+
+**The app** runs entirely on your computer and answers only requests from this
+machine.
+- Make a day, then drag the day's photos and voice notes in.
+- Choose a model, or tick *CPU only* on a laptop without a GPU.
+- Press **Process**. Progress updates stop by stop.
+
+You get:
+- an offline route map with a scale bar, and pins coloured by glacial setting;
+- one card per stop with photo, voice-note playback, transcript and summary;
+- the observations first, with anything the model couldn't judge folded into
+  one line;
+- the evidence, citation and in-view rule behind each answer, one click away;
+- filters for disagreements and downgraded answers;
+- downloads of the trip page, CSV and GeoJSON.
+
+It works in dark mode and at phone width.
+
+The same pipeline from the command line:
+
+```bash
+python -m lookout process trips/2026-10-10             # -> trips/2026-10-10/lookout_out/trip.html
 python -m lookout process trips/2026-10-10 --dry-run   # see how files group into stops
 python -m lookout process trips/2026-10-10 --cpu       # no GPU: uses gemma4:e2b on CPU
 ```
 
-Try it on the synthetic test day in the repo:
-`python -m lookout process trips/synthetic-day`.
+**Try it without going anywhere.** The repo has three test days, each clearly
+labelled as test data:
+- `trips/synthetic-day/`: synthetic test data built from the evaluation photos.
+- `trips/test-hunza/` and `trips/test-skardu/`: two days in Gilgit-Baltistan
+  assembled from freely licensed Wikimedia photos. The photographers' recorded
+  camera positions are written into the EXIF, the clock times are invented,
+  and the voice notes are synthetic.
+
+They include glaciers with no lake in frame, places with no water at all, a
+dammed reservoir and a heavily edited winter photo. Attribution is in each
+day's README.
 
 **On the trail:** turn on location for the camera. At each lake, take one
 wide photo that shows the shore, the outlet end and anything above the water.
@@ -136,6 +167,7 @@ the GPU):
 | v2 | evidence first | 71% | 5 | **18** | 3 |
 | v3 | scope questions gate dam and downstream items | 82% | 4 | 5 | 7 |
 | v4 | final prompt | **88%** | **0** | **3** | 8 |
+| v5 | v4 plus verifier bug fixes (below) | 87% | 0 | 3 | 9 |
 
 v2 is the instructive one. Making the model state evidence first ended the
 unsupported answers, but it then confidently said "no" about things it could
@@ -164,8 +196,27 @@ gemma3:4b's timing isn't representative and isn't quoted.
   treat differences of a few points as noise. The one consistent difference is
   that e4b makes fewer false "no" answers than e2b, which is why it's the
   default.
-- **Voice path:** tested on the synthetic day and a real outing, not on a
+- **Voice path:** tested on the synthetic and internet test days, not on a
   labelled set.
+
+**What realistic photos showed** (the two Gilgit-Baltistan test days).
+- **A heavily edited winter photo produced a confident hallucination.** The
+  model "saw" a moraine dam, low freeboard and the outlet, each with plausible
+  evidence. No rule can catch that, because the evidence looks fine and the
+  model says the dam is in view. Stylised or HDR photos are a real limit; plain
+  phone photos are what it is built for.
+- **Place names get misheard.** The speech engine's "Attabad" was transcribed
+  as "A bad lake", and "Satpara" as "Sapporo". The observations survive; the
+  names don't.
+- **The model sometimes repeated its answer as its evidence** (`"no"` on a
+  village photo). Now treated as no evidence.
+- **One rule had never worked.** An editing slip turned the regex `\b` in the
+  "I can't see it" rule into a backspace character, so the rule matched
+  nothing, and its tests passed through a different rule. Both are fixed, and
+  the tests now check the *reason* for each downgrade.
+- **Photo and voice merging behaved as designed at Satpara.** The hiker's
+  "concrete dam" answered *moraine dam: no*. Whether the dam was in view
+  ("behind me") was shown as a disagreement, not resolved.
 
 ## Privacy and ethics
 
@@ -181,16 +232,29 @@ gemma3:4b's timing isn't representative and isn't quoted.
 ```
 lookout/        ingest (EXIF time/GPS, memo times, grouping), audio (ffmpeg),
                 gemma (Ollama client), checklist, verify (rules + merge),
-                offline (network guard), report (CSV/GeoJSON/HTML), cli
+                offline (network guard), report (CSV/GeoJSON/HTML),
+                pipeline (shared by CLI and app), server + ui/ (the app), cli
 eval/           photos + ATTRIBUTION.md, labels.json, run_eval.py, results/
-tools/          make_synthetic_day.py, check_trip_page.mjs
-trips/          synthetic-day/ (test data, labelled as such)
-tests/          49 tests: python -m pytest
+tools/          make_synthetic_day.py, find_test_photos.py, make_internet_days.py,
+                check_trip_page.mjs, e2e_ui.mjs
+trips/          synthetic-day/, test-hunza/, test-skardu/ (test data, labelled as such)
+tests/          57 tests: python -m pytest
+docs/           dev-post.md (submission draft), screenshots/
 ```
 
-`node tools/check_trip_page.mjs <out-dir>` checks a generated page against its
-CSV: no external resources, one card per stop, and every answer chip matching
-the CSV.
+Three levels of testing:
+- `python -m pytest`: the rules, ingest, report, and the app's HTTP API. The
+  API tests run the real server, with a stand-in model, through upload, process
+  and download, plus the security checks.
+- `node tools/check_trip_page.mjs <out-dir>`: checks a generated trip page
+  against its CSV (no external resources, one card per stop, every answer
+  matching).
+- `node tools/e2e_ui.mjs trips/test-hunza`, with `python -m lookout ui`
+  running: drives a real headless Chrome through the whole app, with the real
+  local model. It makes a day, uploads files through the file picker, processes
+  them, and then uses the map, filters, evidence rows and lightbox. It checks
+  every photo decodes, that there is no horizontal scroll at phone width, and
+  that the console has no errors. It saves screenshots to `docs/screenshots/`.
 
 ## Built with
 
