@@ -107,6 +107,22 @@ TRANSCRIBE_PROMPT = (
     "[no speech].")
 
 
+def drop_echo_translation(text: str) -> str:
+    """Remove an 'English:' line that only repeats the transcript.
+
+    Asked to translate when the speech is not English, the model sometimes
+    'translates' English into the same English, doubling the note.
+    """
+    head, sep, tail = text.rpartition("English:")
+    if not sep or not head.strip():
+        return text
+    a = set(re.findall(r"[a-z']{3,}", head.lower()))
+    b = set(re.findall(r"[a-z']{3,}", tail.lower()))
+    if b and len(a & b) / len(b) >= 0.8:
+        return head.strip()
+    return text
+
+
 def transcribe(chunks: list[str], *, model: str = DEFAULT_MODEL,
                cpu: bool = False) -> dict:
     """Transcribe a memo given as base64 WAV chunks. Returns {text, timings}."""
@@ -114,7 +130,7 @@ def transcribe(chunks: list[str], *, model: str = DEFAULT_MODEL,
     for chunk in chunks:
         r = chat(TRANSCRIBE_PROMPT, model=model, media=[chunk], cpu=cpu,
                  max_tokens=1024)
-        texts.append(r["text"].strip())
+        texts.append(drop_echo_translation(r["text"].strip()))
         timings.append(r["timings"])
     return {"text": " ".join(t for t in texts if t and t != "[no speech]"),
             "timings": timings}
