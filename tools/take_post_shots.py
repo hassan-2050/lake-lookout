@@ -134,6 +134,17 @@ def shots(p) -> None:
     page.wait_for_timeout(300)
     page.screenshot(path=OUT / "cover.png")
     c.close()
+
+    # 9. the live read-only demo on GitHub Pages
+    c = ctx(1440, 900)
+    page = c.new_page()
+    page.goto("https://hassan-2050.github.io/lake-lookout/demo/#/day/test-hunza")
+    page.wait_for_function("(document.querySelector('.day-head h1')||{}).textContent === 'test-hunza' && "
+                           "[...document.querySelectorAll('.card img.main')].every((i) => i.complete && i.naturalWidth > 0)",
+                           timeout=60000)
+    page.wait_for_timeout(400)
+    page.screenshot(path=OUT / "10-live-demo.png")
+    c.close()
     browser.close()
 
 

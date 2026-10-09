@@ -16,7 +16,7 @@ cover_image: https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/doc
 > Every *yes* or *no* has to name its evidence. Anything it can't actually see
 > stays *unclear*. It is open source (MIT), and it costs nothing to run.
 
-![Lake Lookout: a processed day in Hunza with its route map, stats and stop cards](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/01-app.png)
+[SCREENSHOT 1: upload docs/post/01-app.png, alt text: "Lake Lookout: a processed day in Hunza with its route map, stats and stop cards"]
 
 ## The lake nobody was watching
 
@@ -56,6 +56,8 @@ A day with Lake Lookout looks like this:
    and checklist, plus a **CSV** and a **GeoJSON** file a researcher can load
    straight into a spreadsheet or a GIS.
 
+[GIF 1: upload docs/post/clips/1-process.gif, alt text: "Dropping in a day's photos and voice notes and pressing Process; the model wait is sped up"]
+
 The checklist asks what a hiker can actually see, and where a question
 corresponds to a published hazard indicator, it says which one:
 
@@ -87,10 +89,12 @@ text-to-speech model running on the same laptop. I checked every line by having
 Gemma 4 transcribe it back, which is how I found that the voice said "Alama"
 for "Ollama".*
 
-![Exploring a processed day: map, evidence, disagreements](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/lake-lookout-demo.gif)
+[GIF 2: upload docs/post/clips/2-evidence.gif, alt text: "Opening a stop from the map: every answer shows its evidence, and what it can't see stays unclear"]
 
 **Live demo (read-only):** [https://hassan-2050.github.io/lake-lookout/](https://hassan-2050.github.io/lake-lookout/)  
 *The real app UI over the processed test days: map, evidence, voice notes, filters and downloads. Nothing is processed on the website. Processing a hike stays on the hiker's own laptop, by design.*
+
+[SCREENSHOT 2: upload docs/post/10-live-demo.png, alt text: "The read-only live demo on GitHub Pages"]
 
 **Code:** [https://github.com/hassan-2050/lake-lookout](https://github.com/hassan-2050/lake-lookout)
 
@@ -118,7 +122,7 @@ machine's GPU for all seven stops.
 **What it got wrong:** the heavily edited winter photo of Borith Lake. More on
 that below.
 
-![The Hunza dry run as a shareable trip page](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/07-trip-page.png)
+[SCREENSHOT 3: upload docs/post/07-trip-page.png, alt text: "The Hunza dry run as a shareable, offline trip page"]
 
 My own walk is next, and I'll add it here.
 
@@ -136,7 +140,7 @@ answers per version. [LABEL REVIEW: replace this sentence with either "I
 reviewed every label myself" or "My coding agent drafted the labels and I
 spot-checked them".]
 
-![Five measured versions: false "no" answers spike to 18 in v2 and fall to 3; accuracy rises from 75% to 87–88%](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/09-iterations.png)
+[SCREENSHOT 4: upload docs/post/09-iterations.png, alt text: "Five measured versions: false no answers spike to 18 in v2 and fall to 3; accuracy rises from 75% to 87-88%"]
 
 | version | change | accuracy | false "yes" | false "no" |
 |---|---|---|---|---|
@@ -180,14 +184,16 @@ Here is that working on a real test stop. The hiker's *"concrete dam"* correctly
 answers **moraine dam: no**. Whether the dam is in view ("…behind me") is shown
 as a disagreement, not resolved:
 
-![A stop card: the hiker's words answer the moraine-dam question; photo and voice disagree about whether the dam is in view](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/02-evidence.png)
+[SCREENSHOT 5: upload docs/post/02-evidence.png, alt text: "A stop card: the hiker's words answer the moraine-dam question; photo and voice disagree about whether the dam is in view"]
+
+[GIF 3: upload docs/post/clips/3-disagree.gif, alt text: "Filtering to disagreements: the photo and the hiker disagree, and the log shows both"]
 
 None of these rules needed a bigger model. They are a few dozen lines of plain
 Python, and each one exists because a measurement showed the failure it
 prevents. Every downgrade is kept, with its reason, so you can see what the
 model said as well as what the log kept:
 
-![Downgraded answers listed with their reasons](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/04-downgrades.png)
+[SCREENSHOT 6: upload docs/post/04-downgrades.png, alt text: "Answers the model could not back up, downgraded with their reasons"]
 
 ## What real photos taught me
 
@@ -291,6 +297,8 @@ phone voice notes (m4a/mp3/…) ──┼─► group into stops (time + distanc
   on your own machine, with a plain HTML/CSS/JS front end and no libraries. It
   has drag-and-drop days, live progress per stop, an offline route map, filters
   and one-click evidence. It works in dark mode and at phone width.
+
+[SCREENSHOT 7: upload docs/post/06-dark.png, alt text: "Lake Lookout in dark mode"]
 - **Three levels of testing:**
   - **59 unit and API tests.** The API tests run the real server with a
     stand-in model.
@@ -301,7 +309,7 @@ phone voice notes (m4a/mp3/…) ──┼─► group into stops (time + distanc
     evidence and lightbox, checks every photo decodes and that there's no
     sideways scroll on a phone, and expects zero console errors.
 
-![Lake Lookout on a phone](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/05-phone.png)
+[GIF 4: upload docs/post/clips/5-phone.gif, alt text: "Lake Lookout at phone width"]
 
 Try it yourself in a few minutes; the repo includes test days:
 

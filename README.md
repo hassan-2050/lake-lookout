@@ -54,6 +54,7 @@ python -m lookout ui              # the app, in your browser at http://127.0.0.1
 **Live demo (read-only):** the three processed test days, in the real app UI, at https://hassan-2050.github.io/lake-lookout/ once GitHub Pages is on (see below).
 
 **[Watch the narrated demo on YouTube](https://youtu.be/1rj782juY7c)** ([MP4](docs/post/lake-lookout-demo.mp4), [captions](docs/post/lake-lookout-demo.srt)) (98 s: the real app and model on the Hunza test day; the voice is Kokoro-82M, an open-weight text-to-speech model run locally) ·
+short clips: [process](docs/post/clips/1-process.gif) · [evidence](docs/post/clips/2-evidence.gif) · [disagreement](docs/post/clips/3-disagree.gif) · [live demo](docs/post/clips/4-live-demo.gif) · [phone](docs/post/clips/5-phone.gif) ·
 more: [the whole day](docs/screenshots/04-result.jpg) · [phone](docs/screenshots/06-phone.jpg) · [dark mode](docs/screenshots/07-dark.jpg)
 
 **The app** runs entirely on your computer and answers only requests from this
@@ -258,7 +259,7 @@ lookout/        ingest (EXIF time/GPS, memo times, grouping), audio (ffmpeg),
                 pipeline (shared by CLI and app), server + ui/ (the app), cli
 eval/           photos + ATTRIBUTION.md, labels.json, run_eval.py, results/
 tools/          make_synthetic_day.py, find_test_photos.py, make_internet_days.py,
-                record_demo.py + narrate.py (Playwright + local TTS), take_post_shots.py, make_chart.py,
+                record_demo.py + narrate.py (Playwright + local TTS), record_clips.py, take_post_shots.py, make_chart.py,
                 check_trip_page.mjs, e2e_ui.mjs, check_static_site.py
 trips/          synthetic-day/, test-hunza/, test-skardu/ (test data, labelled as such)
 tests/          62 tests: python -m pytest
