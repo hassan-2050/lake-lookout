@@ -94,26 +94,33 @@ for "Ollama".*
 
 **Code:** [https://github.com/hassan-2050/lake-lookout](https://github.com/hassan-2050/lake-lookout)
 
-## Taking it outside
+## Taking it outside: a dry run first
 
-[WRITE THIS AFTER YOUR OUTING. Keep it concrete and honest. A short structure
-that works:
+I haven't done my own walk yet as I write this, so I won't pretend I have.
+To see what a real day produces before I go, I built one. It has seven stops
+along the Karakoram Highway in Hunza, from Karimabad to Passu, assembled from
+geotagged Wikimedia photos with synthetic voice notes. The repo labels it as
+test data and credits every photographer. Then I processed it the way you
+would on an evening at a guesthouse: one click, and **28 seconds** on my
+machine's GPU for all seven stops.
 
-- **Where and when:** "On [DAY], I walked [PLACE / ROUTE, about X km] and
-  stopped at [N] spots by [the lake / pond / river / stream]." Say what the
-  weather and light were like.
-- **What I did at each stop:** one wide photo plus a voice note. Quote one
-  voice note word for word: "[YOUR WORDS]".
-- **The evening:** "Back home I copied [N] photos and [N] voice notes off my
-  phone, pressed Process, and it took [X] seconds on [YOUR LAPTOP, GPU or
-  CPU]."
-- **What it got right:** [e.g. a pond came back "not glacial", as it should].
-- **What it got wrong, or surprised me:** [one real example from your log].
-- **How it felt:** [Did you look at your phone less? Did saying what you saw
-  out loud make you look more closely?]
+**What it got right:**
 
-Add one or two photos from your walk and a screenshot of your own trip page:
-![My outing](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/[YOUR_OUTING_SCREENSHOT].png)]
+- **No lake, no claims.** At Baltit Fort, with no water in the photo, *water
+  body* came back **no**.
+- **The hiker's words were enough.** A voice-only stop, *"a small muddy pond
+  next to the road, no ice anywhere near it"*, was logged as **not glacial**
+  from the words alone.
+- **Disagreements were shown, not resolved.** At Passu Glacier the photo and
+  the voice note disagreed about water and ice. The log shows both and picks
+  neither.
+
+**What it got wrong:** the heavily edited winter photo of Borith Lake. More on
+that below.
+
+![The Hunza dry run as a shareable trip page](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/07-trip-page.png)
+
+My own walk is next, and I'll add it here.
 
 ## The interesting part: making a small model unable to overclaim
 
@@ -316,7 +323,6 @@ python -m lookout ui        # then open the test-hunza day and press Process
 - **Edited photos can fool it,** as the winter Borith photo showed.
 - **Voice in other languages:** the transcription prompt asks for the original
   language plus an English line, but I have only tested English so far.
-  [IF YOU RECORDED IN URDU OR NEPALI, SAY WHAT HAPPENED HERE.]
 - **It is not a hazard assessment, and it won't become one by adding a score.**
 
 ## What's next
@@ -335,7 +341,7 @@ python -m lookout ui        # then open the test-hunza day and press Process
   the reason this one exists, not part of it.
 - **Built with Claude Code** as my coding agent. The `eval/results/` folder is
   the loop we actually worked in: hypothesis, change, measured result.
-  [OPTIONAL: link or embed your agent session here.]
+
 - **Narration:** Kokoro-82M (Apache-2.0) through kokoro-onnx, run locally. The
   video is recorded from the real app with Playwright (`tools/record_demo.py`).
 - **Photos:** all evaluation and test-day photos are from Wikimedia Commons
@@ -344,4 +350,4 @@ python -m lookout ui        # then open the test-hunza day and press Process
 - **Licence:** MIT.
 
 Thanks for reading. If you live or walk near glacial lakes and want to try it,
-I'd love to hear what it gets wrong. [OPTIONAL: YOUR CONTACT OR SOCIAL LINK]
+I'd love to hear what it gets wrong.
