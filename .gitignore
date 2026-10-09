@@ -1,0 +1,13 @@
+# environments
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# outputs of a processing run (regenerate with `python -m lookout process <day>`)
+**/lookout_out/
+
+# raw outings stay on the laptop unless deliberately published as a sample
+trips/*
+!trips/.gitkeep
+!trips/synthetic-day/
