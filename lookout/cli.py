@@ -4,6 +4,7 @@
     python -m lookout process trips/2026-10-10 --dry-run      # show stops, no model
     python -m lookout process trips/2026-10-10 --cpu          # no GPU: gemma4:e2b on CPU
     python -m lookout ui                                      # the local app
+    python -m lookout export --out docs/demo                  # read-only static demo site
 
 Processing runs inside the offline guard: only the local model server can be
 reached. A stop that fails is recorded with its error and the run continues.
@@ -78,6 +79,12 @@ def main(argv=None) -> int:
     pp.add_argument("--out", help="output folder (default <folder>/lookout_out)")
     pp.add_argument("--dry-run", action="store_true",
                     help="show how files group into stops, without the model")
+    pe = sub.add_parser("export", help="write processed days as a read-only static demo site")
+    pe.add_argument("--trips", default="trips")
+    pe.add_argument("--out", default="docs/demo")
+    pe.add_argument("--days", nargs="*", help="day folders to include (default: all processed)")
+    pe.add_argument("--featured", help="day the demo's home page opens")
+    pe.add_argument("--repo", help="link to the code, shown on the demo's home page")
     pu = sub.add_parser("ui", help="open the local app in your browser")
     pu.add_argument("--trips", default="trips", help="folder holding one folder per day")
     pu.add_argument("--port", type=int, default=8765)
@@ -87,4 +94,11 @@ def main(argv=None) -> int:
         if not args.model:
             args.model = gemma.CPU_MODEL if args.cpu else gemma.DEFAULT_MODEL
         return cmd_process(args)
+    if args.cmd == "export":
+        from .export import export
+        info = export(Path(args.trips), Path(args.out), days=args.days,
+                      featured=args.featured, repo=args.repo)
+        print(f"exported {', '.join(info['days'])}: {info['files']} files, "
+              f"{info['bytes'] / 1e6:.1f} MB -> {args.out}")
+        return 0
     return cmd_ui(args)

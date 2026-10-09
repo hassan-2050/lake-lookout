@@ -51,6 +51,8 @@ python -m lookout ui              # the app, in your browser at http://127.0.0.1
 
 ![Lake Lookout app: a processed day in Hunza with its route map and stop cards](docs/screenshots/app.png)
 
+**Live demo (read-only):** the three processed test days, in the real app UI, at `https://<your-github-username>.github.io/lake-lookout/` once GitHub Pages is on (see below).
+
 **[Watch the narrated demo](docs/post/lake-lookout-demo.mp4)** (98 s: the real app and model on the Hunza test day; the voice is Kokoro-82M, an open-weight text-to-speech model run locally) ·
 more: [the whole day](docs/screenshots/04-result.jpg) · [phone](docs/screenshots/06-phone.jpg) · [dark mode](docs/screenshots/07-dark.jpg)
 
@@ -221,6 +223,23 @@ gemma3:4b's timing isn't representative and isn't quoted.
   "concrete dam" answered *moraine dam: no*. Whether the dam was in view
   ("behind me") was shown as a disagreement, not resolved.
 
+## Deploying the demo
+
+Processing a hike is deliberately *not* a web service: it would mean uploading
+people's photos, voices and locations, and it needs a GPU model running all
+the time. What is deployed is a **read-only static demo**: the real app UI over
+processed days, with no server at all.
+
+```bash
+python -m lookout export --out docs/demo --featured test-hunza --repo https://github.com/<you>/lake-lookout
+python tools/check_static_site.py      # 22 browser checks of the exported site
+```
+
+On GitHub: **Settings → Pages → Deploy from a branch → `main` / `/docs`**.
+`docs/index.html` forwards to `docs/demo/`. Any static host works the same way;
+on Render, for example, it is a static site whose publish directory is
+`docs/demo`.
+
 ## Privacy and ethics
 
 - Photos, voice and locations never leave the laptop. The page has no
@@ -240,10 +259,10 @@ lookout/        ingest (EXIF time/GPS, memo times, grouping), audio (ffmpeg),
 eval/           photos + ATTRIBUTION.md, labels.json, run_eval.py, results/
 tools/          make_synthetic_day.py, find_test_photos.py, make_internet_days.py,
                 record_demo.py + narrate.py (Playwright + local TTS), take_post_shots.py, make_chart.py,
-                check_trip_page.mjs, e2e_ui.mjs
+                check_trip_page.mjs, e2e_ui.mjs, check_static_site.py
 trips/          synthetic-day/, test-hunza/, test-skardu/ (test data, labelled as such)
-tests/          59 tests: python -m pytest
-docs/           post/ (DEV write-up, demo video + GIF, images), screenshots/ (E2E output)
+tests/          62 tests: python -m pytest
+docs/           demo/ (exported read-only site), post/ (DEV write-up, video, images), screenshots/
 ```
 
 Three levels of testing:

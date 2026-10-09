@@ -89,6 +89,9 @@ for "Ollama".*
 
 ![Exploring a processed day: map, evidence, disagreements](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/lake-lookout-demo.gif)
 
+**Live demo (read-only):** [https://[YOUR_GITHUB_USERNAME].github.io/lake-lookout/](https://[YOUR_GITHUB_USERNAME].github.io/lake-lookout/)  
+*The real app UI over the processed test days: map, evidence, voice notes, filters and downloads. Nothing is processed on the website. Processing a hike stays on the hiker's own laptop, by design.*
+
 **Code:** [https://github.com/[YOUR_GITHUB_USERNAME]/lake-lookout](https://github.com/[YOUR_GITHUB_USERNAME]/lake-lookout)
 
 ## Taking it outside

@@ -19,7 +19,14 @@
    the bracket if you only used English.
 6. **Optional**: agent session link or embed, and your contact or social link.
    Delete these brackets if you don't use them.
-7. Set `published: true` (or use DEV's publish button), keep the tags
+7. **Turn on the live demo**: in the GitHub repo, go to Settings → Pages →
+   Deploy from a branch → `main`, folder `/docs` → Save. After a minute or two,
+   check that `https://[YOUR_GITHUB_USERNAME].github.io/lake-lookout/` opens the
+   demo. (Optional: re-export with your repo link so the demo's home page links
+   to the code: `python -m lookout export --out docs/demo --featured test-hunza
+   --repo https://github.com/[YOUR_GITHUB_USERNAME]/lake-lookout`, then commit
+   and push.)
+8. Set `published: true` (or use DEV's publish button), keep the tags
    `devchallenge, hf26challenge`, and select the **Best Use of Gemma** prize
    category if the template asks.
 
