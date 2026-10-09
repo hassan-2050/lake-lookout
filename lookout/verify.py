@@ -126,22 +126,38 @@ def verify(raw: dict, *, has_photo: bool, has_voice: bool,
             checked[item] = {"answer": answer, "evidence": evidence,
                              "source": source if answer != "unclear" else "none"}
 
+    downgrades += apply_scope(checked)
+    checked["summary"] = str(raw.get("summary", "")).strip()
+    return checked, downgrades
+
+
+def apply_scope(checked: dict, *, merged: bool = False) -> list[dict]:
+    """The in-view rule: dam and downstream items stand only when that part of
+    the scene is confirmed in view, or the hiker said it. Changes `checked` in
+    place and returns the downgrades.
+
+    It runs on each pass and AGAIN after photo and voice are merged: the photo
+    pass can "see" a dam that the voice pass contradicts, and once the merge
+    turns "dam in view" into a disagreement, the photo's dam answers no longer
+    have a confirmed view to stand on. (Seen in the demo recording: a fort with
+    no lake kept "steep dam face: yes".) After a merge, source "both" means the
+    hiker said it too, so it counts as the hiker's words.
+    """
+    voice_sources = ("voice", "both") if merged else ("voice",)
+    downgrades = []
     for item in ITEMS:
         if not item.needs:
             continue
         entry = checked[item.id]
         in_view = checked[item.needs]["answer"] == "yes"
-        from_voice = entry["source"] == "voice"   # already checked against the transcript
-        if entry["answer"] != "unclear" and not in_view and not from_voice:
+        if entry["answer"] != "unclear" and not in_view and entry["source"] not in voice_sources:
             downgrades.append({
                 "item": item.id, "model_answer": entry["answer"],
                 "reason": f"'{BY_ID[item.needs].label}' is not confirmed, so this "
                           "cannot be judged from the photo"})
             checked[item.id] = {"answer": "unclear", "evidence": entry["evidence"],
                                 "source": "none"}
-
-    checked["summary"] = str(raw.get("summary", "")).strip()
-    return checked, downgrades
+    return downgrades
 
 
 def merge(photo: dict | None, voice: dict | None) -> tuple[dict, list[dict]]:

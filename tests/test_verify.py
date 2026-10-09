@@ -1,5 +1,5 @@
 from lookout.checklist import ITEM_IDS, json_schema, prompt
-from lookout.verify import merge, verify
+from lookout.verify import apply_scope, merge, verify
 
 
 def _raw(**over):
@@ -205,6 +205,30 @@ def test_merge_never_picks_a_side_in_a_disagreement():
     assert "photo says no" in merged["calving_icebergs"]["evidence"]
     assert "hiker says yes" in merged["calving_icebergs"]["evidence"]
     assert conflicts == [{"item": "calving_icebergs", "photo": "no", "voice": "yes"}]
+
+
+def test_scope_is_rechecked_after_a_merge():
+    """Seen in the demo: a fort with no lake kept 'steep dam face: yes'.
+
+    The photo pass 'saw' the dam; the voice pass said it was not in view; the
+    merge made 'dam in view' a disagreement, so the photo's dam answer must go.
+    """
+    photo = _cl(dam_in_view=_a("yes", "ridge at the left"),
+                steep_dam_face=_a("yes", "steep outer face of the ridge"))
+    voice = _cl(dam_in_view=_a("no", "no lake here", "voice"))
+    merged, conflicts = merge(photo, voice)
+    assert merged["steep_dam_face"]["answer"] == "yes"          # merge alone keeps it
+    down = apply_scope(merged, merged=True)
+    assert merged["steep_dam_face"]["answer"] == "unclear"
+    assert [d["item"] for d in down] == ["steep_dam_face"]
+
+
+def test_hikers_agreement_survives_the_post_merge_check():
+    photo = _cl(moraine_dam=_a("yes", "loose rock ridge"))
+    voice = _cl(moraine_dam=_a("yes", "ridge of loose rock", "voice"))
+    merged, _ = merge(photo, voice)
+    assert apply_scope(merged, merged=True) == []
+    assert merged["moraine_dam"]["answer"] == "yes"
 
 
 def test_merge_with_one_source_returns_it():

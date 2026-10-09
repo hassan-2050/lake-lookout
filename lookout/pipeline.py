@@ -14,7 +14,7 @@ from typing import Callable
 
 from . import __version__, audio, checklist, gemma, ingest, report
 from .offline import offline
-from .verify import merge, verify
+from .verify import apply_scope, merge, verify
 
 Progress = Callable[[dict], None]
 
@@ -86,6 +86,11 @@ def process_stop(stop: ingest.Stop, *, model: str, cpu: bool, max_photos: int,
                                     transcript=out["transcript"])
             out["downgrades"] += [{**d, "pass": "voice"} for d in down]
         out["checklist"], out["conflicts"] = merge(photo_cl, voice_cl)
+        if photo_cl is not None and voice_cl is not None:
+            # A merge can turn "dam in view" into a disagreement; the dam
+            # answers then lose the view they stood on.
+            out["downgrades"] += [{**d, "pass": "merged"}
+                                  for d in apply_scope(out["checklist"], merged=True)]
     except (gemma.ModelError, audio.AudioError, OSError) as exc:
         out["error"] = str(exc)
     return out
