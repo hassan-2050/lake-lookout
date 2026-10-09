@@ -103,8 +103,13 @@ async function openDay(name) {
   }
   state.day = name;
   renderDays();
-  try { state.data = await api(`/api/days/${enc(name)}`); }
-  catch (e) { $("#main").innerHTML = `<div class="notice err">${esc(e.message)}</div>`; return; }
+  let data;
+  try { data = await api(`/api/days/${enc(name)}`); }
+  catch (e) { if (state.day === name) $("#main").innerHTML = `<div class="notice err">${esc(e.message)}</div>`; return; }
+  // A slower answer for a day the person has already left must not replace
+  // the day they are looking at now.
+  if (state.day !== name) return;
+  state.data = data;
   if (state.data.job && state.data.job.status === "running") startPolling();
   renderDay();
 }

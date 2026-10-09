@@ -84,8 +84,11 @@ const waitFor = async (expr, ms = 10000, step = 200) => {
   while (Date.now() < end) { if (await js(expr)) return true; await sleep(step); }
   return false;
 };
-const shot = async (name) => {
-  const { data } = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: true });
+// Full-page shots as JPEG (they are long); `screen` = just what is on screen.
+const shot = async (name, screen = false) => {
+  const jpg = name.endsWith(".jpg");
+  const { data } = await send("Page.captureScreenshot", {
+    format: jpg ? "jpeg" : "png", ...(jpg ? { quality: 82 } : {}), captureBeyondViewport: !screen });
   writeFileSync(join(SHOTS, name), Buffer.from(data, "base64"));
 };
 const viewport = (width, height, mobile = false) =>
@@ -101,7 +104,7 @@ await send("Page.navigate", { url: APP });
 check("home page renders", await waitFor(`!!document.querySelector(".hero h1")`));
 check("model status shows the local model", await waitFor(`/ready|not running|No Gemma/.test(document.querySelector("#model-pill").textContent)`),
   await js(`document.querySelector("#model-pill").textContent`));
-await shot("01-home.png");
+await shot("01-home.jpg");
 
 // ---- 2. create a day through the form ---------------------------------------
 await js(`document.querySelector('[data-action="new-day"]').click()`);
@@ -120,14 +123,14 @@ check(`files upload and group into stops`, await waitFor(`document.querySelector
   `${files.length} files`);
 const planStops = await js(`document.querySelectorAll(".plan .pc").length`);
 if (expectStops != null) check("same grouping as the command line", planStops === expectStops, `${planStops} stops`);
-await shot("02-plan.png");
+await shot("02-plan.jpg");
 
 // ---- 4. process with the real model -------------------------------------------
 const started = Date.now();
 await js(`document.querySelector('[data-action="process"]').click()`);
 check("progress panel appears", await waitFor(`!!document.querySelector(".progress .meter")`, 15000));
 await waitFor(`document.querySelectorAll(".plist .st.done, .plist .st.err").length >= 1`, 180000);
-await shot("03-progress.png");
+await shot("03-progress.jpg");
 const finished = await waitFor(`document.querySelectorAll(".card").length >= ${planStops}`, 600000, 500);
 check("processing finishes and every stop gets a card", finished, `${((Date.now() - started) / 1000).toFixed(1)} s`);
 
@@ -144,7 +147,7 @@ check("one map pin per stop with GPS", r.pins === r.located, `${r.pins} pins, ${
 check("checklist rows rendered", r.chips > 0, `${r.chips} rows`);
 check("downloads offered", ["Open trip page", "CSV", "GeoJSON"].every((l) => r.links.includes(l)), r.links.join(", "));
 console.log(`        stats: ${r.stats.join(" | ")}`);
-await shot("04-result.png");
+await shot("04-result.jpg");
 
 // every stop's photo actually decodes (not just an <img> tag)
 check("every card photo loads", await waitFor(`[...document.querySelectorAll(".card img.main")].every((i) => i.complete && i.naturalWidth > 0)`, 20000),
@@ -179,7 +182,7 @@ const hasPhoto = await js(`!!document.querySelector('.card img.main')`);
 if (hasPhoto) {
   await js(`document.querySelector('.card img.main').click()`);
   check("photo opens in the lightbox", await waitFor(`!document.querySelector("#lightbox").hidden && document.querySelector("#lightbox img").complete && document.querySelector("#lightbox img").naturalWidth > 0`));
-  await shot("05-lightbox.png");
+  await shot("05-lightbox.jpg", true);
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape" });
   check("Escape closes the lightbox", await waitFor(`document.querySelector("#lightbox").hidden`));
 }
@@ -191,7 +194,7 @@ check("trip page is served", tripOk);
 // ---- 6. other layouts ----------------------------------------------------------
 await viewport(390, 844, true);
 await sleep(300);
-await shot("06-phone.png");
+await shot("06-phone.jpg");
 const wide = await js(`[...document.querySelectorAll("body *")]
   .filter((el) => el.getBoundingClientRect().right > innerWidth + 1)
   .slice(0, 3).map((el) => el.tagName.toLowerCase() + (el.className ? "." + String(el.className).split(" ")[0] : "")).join(", ")`);
@@ -200,7 +203,23 @@ check("no horizontal scroll at phone width", await js(`document.documentElement.
 await viewport(1360, 900);
 await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: "dark" }] });
 await sleep(300);
-await shot("07-dark.png");
+await shot("07-dark.jpg");
+
+// ---- the README picture: a named, processed test day, light theme, top of page
+await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-color-scheme", value: "light" }] });
+const showcase = process.env.SHOWCASE_DAY ?? "test-hunza";
+const days = await (await fetch(`${APP}/api/days`)).json();
+if (days.some((d) => d.name === showcase && d.processed)) {
+  if (!process.env.KEEP_DAY) rmSync(resolve("trips", DAY), { recursive: true, force: true });
+  // A fresh load (new query string), so the day list no longer has the test day.
+  await send("Page.navigate", { url: `${APP}/?shot=1#/day/${encodeURIComponent(showcase)}` });
+  check("switching days shows the new day", await waitFor(
+    `(document.querySelector(".day-head h1") || {}).textContent === ${JSON.stringify(showcase)}
+     && [...document.querySelectorAll(".card img.main")].every((i) => i.complete && i.naturalWidth > 0)`, 20000));
+  await js(`scrollTo(0, 0)`);
+  await sleep(300);
+  await shot("app.png", true);
+}
 
 // ---- 7. console ------------------------------------------------------------------
 check("no console errors or uncaught exceptions", problems.length === 0, problems.slice(0, 3).join(" | "));

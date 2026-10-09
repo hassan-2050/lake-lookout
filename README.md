@@ -49,7 +49,9 @@ python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # Window
 python -m lookout ui              # the app, in your browser at http://127.0.0.1:8765
 ```
 
-![Lake Lookout app: a processed day in Hunza with its route map and stop cards](docs/screenshots/04-result.png)
+![Lake Lookout app: a processed day in Hunza with its route map and stop cards](docs/screenshots/app.png)
+
+More: [the whole day](docs/screenshots/04-result.jpg) · [phone](docs/screenshots/06-phone.jpg) · [dark mode](docs/screenshots/07-dark.jpg)
 
 **The app** runs entirely on your computer and answers only requests from this
 machine.
