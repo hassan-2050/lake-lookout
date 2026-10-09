@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lake Lookout</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="#" data-action="home" aria-label="Lake Lookout home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 24 L11 9 L16 16 L20 11 L30 24 Z" class="peak"/><path d="M5 26 Q16 21 27 26 Q16 30 5 26 Z" class="lake"/></svg>
+    <span>Lake Lookout</span>
+  </a>
+  <div class="pills">
+    <span class="pill ok" title="While processing, every connection except the one to the local model is blocked."><i></i>Offline · nothing leaves this computer</span>
+    <span class="pill" id="model-pill"><i></i>Checking the local model…</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="side">
+    <div class="side-head">
+      <h2>Days</h2>
+      <button class="btn small" data-action="new-day">+ New day</button>
+    </div>
+    <form class="new-day" id="new-day" hidden>
+      <label for="new-day-name">Name the day</label>
+      <div class="row">
+        <input id="new-day-name" name="name" required pattern="[A-Za-z0-9][A-Za-z0-9 _.\-]{0,80}" autocomplete="off">
+        <button class="btn primary small" type="submit">Create</button>
+      </div>
+    </form>
+    <nav id="days" aria-label="Days"></nav>
+  </aside>
+
+  <main id="main" tabindex="-1"></main>
+</div>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="close" data-action="close-lightbox" aria-label="Close">×</button>
+  <img alt="">
+  <p class="caption"></p>
+</div>
+
+<div class="tooltip" id="tooltip" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>

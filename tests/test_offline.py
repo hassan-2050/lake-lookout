@@ -39,3 +39,15 @@ def test_guard_is_removed_afterwards():
     with offline():
         assert socket.socket.connect is not real
     assert socket.socket.connect is real
+
+
+def test_nested_guards_hold_until_the_last_one_exits():
+    """Two days processed at once: the first to finish must not lift the guard."""
+    real = socket.socket.connect
+    with offline():
+        with offline():
+            pass
+        assert socket.socket.connect is not real
+        with pytest.raises(OfflineViolation):
+            socket.create_connection(("10.255.255.1", 80), timeout=1)
+    assert socket.socket.connect is real

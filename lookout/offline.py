@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import ipaddress
 import socket
+import threading
 from contextlib import contextmanager
 
 _real_connect = socket.socket.connect
@@ -49,13 +50,27 @@ def _guarded_connect_ex(self, address):
     return _real_connect_ex(self, address)
 
 
+_lock = threading.Lock()
+_depth = 0
+
+
 @contextmanager
 def offline():
-    """Block every non-loopback connection inside the `with` block."""
-    socket.socket.connect = _guarded_connect
-    socket.socket.connect_ex = _guarded_connect_ex
+    """Block every non-loopback connection inside the `with` block.
+
+    Reference-counted: the app can process two days at once in separate
+    threads, and the first to finish must not lift the guard from the other.
+    """
+    global _depth
+    with _lock:
+        _depth += 1
+        socket.socket.connect = _guarded_connect
+        socket.socket.connect_ex = _guarded_connect_ex
     try:
         yield
     finally:
-        socket.socket.connect = _real_connect
-        socket.socket.connect_ex = _real_connect_ex
+        with _lock:
+            _depth -= 1
+            if _depth == 0:
+                socket.socket.connect = _real_connect
+                socket.socket.connect_ex = _real_connect_ex

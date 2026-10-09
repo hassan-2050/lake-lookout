@@ -5,7 +5,7 @@ import re
 from conftest import make_photo
 from lookout import report
 from lookout.checklist import ITEM_IDS
-from lookout.cli import _pick
+from lookout.pipeline import pick as _pick
 
 
 def _stop(sid, photo, lat=27.9, lon=86.92, error=None, transcript=""):
