@@ -3,10 +3,8 @@
 `lake-lookout-dev-post.md` is ready to paste into DEV's editor once every
 `[SQUARE BRACKET]` is replaced. Search the file for `[` to find them all.
 
-1. **`[YOUR_GITHUB_USERNAME]`** (appears many times): push this repo to GitHub
-   as a **public** repo named `lake-lookout`, then find-and-replace your
-   username. Every image is loaded from `docs/post/` in that repo, so check
-   that one image URL opens in a browser before you publish.
+1. ~~GitHub username~~ done: the repo is https://github.com/hassan-2050/lake-lookout and every
+   image and demo link in the post points at it.
 2. **`[YOUR_YOUTUBE_OR_LOOM_URL]`**: upload `docs/post/lake-lookout-demo.mp4`
    (98 s, 1280×720, narrated) to YouTube (unlisted is fine) or Loom, and paste the link.
    DEV embeds it with `{% embed ... %}`.
@@ -19,13 +17,9 @@
    the bracket if you only used English.
 6. **Optional**: agent session link or embed, and your contact or social link.
    Delete these brackets if you don't use them.
-7. **Turn on the live demo**: in the GitHub repo, go to Settings → Pages →
-   Deploy from a branch → `main`, folder `/docs` → Save. After a minute or two,
-   check that `https://[YOUR_GITHUB_USERNAME].github.io/lake-lookout/` opens the
-   demo. (Optional: re-export with your repo link so the demo's home page links
-   to the code: `python -m lookout export --out docs/demo --featured test-hunza
-   --repo https://github.com/[YOUR_GITHUB_USERNAME]/lake-lookout`, then commit
-   and push.)
+7. **Turn on the live demo** (if it isn't on yet): Settings → Pages → Deploy from a
+   branch → `main`, folder `/docs` → Save. Then check that
+   https://hassan-2050.github.io/lake-lookout/ opens the demo.
 8. Set `published: true` (or use DEV's publish button), keep the tags
    `devchallenge, hf26challenge`, and select the **Best Use of Gemma** prize
    category if the template asks.

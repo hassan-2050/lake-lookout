@@ -3,7 +3,7 @@ title: "Lake Lookout: Be the Eyes the Satellites Lack (Gemma 4, fully offline)"
 published: false
 description: Hike with your phone. In the evening, a local Gemma 4 turns your photos and voice notes into a glacial-lake field log, with no signal, no cloud and no risk scores.
 tags: devchallenge, hf26challenge, gemma, opensource
-cover_image: https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/cover.png
+cover_image: https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/cover.png
 ---
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge: Week 1](https://dev.to/challenges/hacktoberfest-week1-2026-10-05) (Touch Grass), entered for **Best Use of Gemma**.*
@@ -16,7 +16,7 @@ cover_image: https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-looko
 > Every *yes* or *no* has to name its evidence. Anything it can't actually see
 > stays *unclear*. It is open source (MIT), and it costs nothing to run.
 
-![Lake Lookout: a processed day in Hunza with its route map, stats and stop cards](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/01-app.png)
+![Lake Lookout: a processed day in Hunza with its route map, stats and stop cards](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/01-app.png)
 
 ## The lake nobody was watching
 
@@ -87,12 +87,12 @@ text-to-speech model running on the same laptop. I checked every line by having
 Gemma 4 transcribe it back, which is how I found that the voice said "Alama"
 for "Ollama".*
 
-![Exploring a processed day: map, evidence, disagreements](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/lake-lookout-demo.gif)
+![Exploring a processed day: map, evidence, disagreements](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/lake-lookout-demo.gif)
 
-**Live demo (read-only):** [https://[YOUR_GITHUB_USERNAME].github.io/lake-lookout/](https://[YOUR_GITHUB_USERNAME].github.io/lake-lookout/)  
+**Live demo (read-only):** [https://hassan-2050.github.io/lake-lookout/](https://hassan-2050.github.io/lake-lookout/)  
 *The real app UI over the processed test days: map, evidence, voice notes, filters and downloads. Nothing is processed on the website. Processing a hike stays on the hiker's own laptop, by design.*
 
-**Code:** [https://github.com/[YOUR_GITHUB_USERNAME]/lake-lookout](https://github.com/[YOUR_GITHUB_USERNAME]/lake-lookout)
+**Code:** [https://github.com/hassan-2050/lake-lookout](https://github.com/hassan-2050/lake-lookout)
 
 ## Taking it outside
 
@@ -113,7 +113,7 @@ that works:
   out loud make you look more closely?]
 
 Add one or two photos from your walk and a screenshot of your own trip page:
-![My outing](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/[YOUR_OUTING_SCREENSHOT].png)]
+![My outing](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/[YOUR_OUTING_SCREENSHOT].png)]
 
 ## The interesting part: making a small model unable to overclaim
 
@@ -129,7 +129,7 @@ answers per version. [LABEL REVIEW: replace this sentence with either "I
 reviewed every label myself" or "My coding agent drafted the labels and I
 spot-checked them".]
 
-![Five measured versions: false "no" answers spike to 18 in v2 and fall to 3; accuracy rises from 75% to 87–88%](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/09-iterations.png)
+![Five measured versions: false "no" answers spike to 18 in v2 and fall to 3; accuracy rises from 75% to 87–88%](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/09-iterations.png)
 
 | version | change | accuracy | false "yes" | false "no" |
 |---|---|---|---|---|
@@ -173,14 +173,14 @@ Here is that working on a real test stop. The hiker's *"concrete dam"* correctly
 answers **moraine dam: no**. Whether the dam is in view ("…behind me") is shown
 as a disagreement, not resolved:
 
-![A stop card: the hiker's words answer the moraine-dam question; photo and voice disagree about whether the dam is in view](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/02-evidence.png)
+![A stop card: the hiker's words answer the moraine-dam question; photo and voice disagree about whether the dam is in view](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/02-evidence.png)
 
 None of these rules needed a bigger model. They are a few dozen lines of plain
 Python, and each one exists because a measurement showed the failure it
 prevents. Every downgrade is kept, with its reason, so you can see what the
 model said as well as what the log kept:
 
-![Downgraded answers listed with their reasons](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/04-downgrades.png)
+![Downgraded answers listed with their reasons](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/04-downgrades.png)
 
 ## What real photos taught me
 
@@ -294,13 +294,13 @@ phone voice notes (m4a/mp3/…) ──┼─► group into stops (time + distanc
     evidence and lightbox, checks every photo decodes and that there's no
     sideways scroll on a phone, and expects zero console errors.
 
-![Lake Lookout on a phone](https://raw.githubusercontent.com/[YOUR_GITHUB_USERNAME]/lake-lookout/main/docs/post/05-phone.png)
+![Lake Lookout on a phone](https://raw.githubusercontent.com/hassan-2050/lake-lookout/main/docs/post/05-phone.png)
 
 Try it yourself in a few minutes; the repo includes test days:
 
 ```bash
 ollama pull gemma4:e4b      # or gemma4:e2b for a laptop without a GPU
-git clone https://github.com/[YOUR_GITHUB_USERNAME]/lake-lookout && cd lake-lookout
+git clone https://github.com/hassan-2050/lake-lookout && cd lake-lookout
 python -m venv .venv && .venv/Scripts/pip install -r requirements.txt   # Windows
 # python -m venv .venv && .venv/bin/pip install -r requirements.txt     # macOS/Linux
 python -m lookout ui        # then open the test-hunza day and press Process

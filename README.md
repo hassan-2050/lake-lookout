@@ -51,7 +51,7 @@ python -m lookout ui              # the app, in your browser at http://127.0.0.1
 
 ![Lake Lookout app: a processed day in Hunza with its route map and stop cards](docs/screenshots/app.png)
 
-**Live demo (read-only):** the three processed test days, in the real app UI, at `https://<your-github-username>.github.io/lake-lookout/` once GitHub Pages is on (see below).
+**Live demo (read-only):** the three processed test days, in the real app UI, at https://hassan-2050.github.io/lake-lookout/ once GitHub Pages is on (see below).
 
 **[Watch the narrated demo](docs/post/lake-lookout-demo.mp4)** (98 s: the real app and model on the Hunza test day; the voice is Kokoro-82M, an open-weight text-to-speech model run locally) ·
 more: [the whole day](docs/screenshots/04-result.jpg) · [phone](docs/screenshots/06-phone.jpg) · [dark mode](docs/screenshots/07-dark.jpg)
@@ -231,7 +231,7 @@ the time. What is deployed is a **read-only static demo**: the real app UI over
 processed days, with no server at all.
 
 ```bash
-python -m lookout export --out docs/demo --featured test-hunza --repo https://github.com/<you>/lake-lookout
+python -m lookout export --out docs/demo --featured test-hunza --repo https://github.com/hassan-2050/lake-lookout
 python tools/check_static_site.py      # 22 browser checks of the exported site
 ```
 
