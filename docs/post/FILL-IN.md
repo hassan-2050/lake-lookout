@@ -8,11 +8,8 @@ My Agent Session, Prize Categories). Search the file for a line starting with `[
 
 1. ~~GitHub username~~ done: the repo is https://github.com/hassan-2050/lake-lookout and every
    image and demo link in the post points at it.
-2. **Video: upload the new version.** The demo now has a 'how it was measured' segment
-   (2 min). Upload `docs/post/lake-lookout-demo.mp4` to YouTube as a new video, add the
-   captions (Subtitles → Upload file → **With timing** → `docs/post/lake-lookout-demo.srt`),
-   and send Claude the new link; the post still embeds the old one
-   (https://youtu.be/1rj782juY7c) until then.
+2. ~~Video~~ done: https://youtu.be/axjGCMU2-k4 (2 min, with the 'how it was measured'
+   segment and uploaded English captions); embedded in the post and linked from the README.
 3. ~~Taking it outside~~ written as an honest **dry run** on the Hunza test day.
    After a real walk, replace it with what actually happened (and a screenshot).
 4. ~~Label review~~ done as a second pass by the coding agent (four labels changed to

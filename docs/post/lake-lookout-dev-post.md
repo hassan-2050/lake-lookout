@@ -115,7 +115,7 @@ My own walk is next, and I'll add it here.
 
 ## Demo
 
-{% embed https://youtu.be/1rj782juY7c %}
+{% embed https://youtu.be/axjGCMU2-k4 %}
 
 *The demo is the real app and the real local model. To show a realistic day, it
 uses a test day I assembled from freely licensed Wikimedia photos of Hunza,
