@@ -38,6 +38,8 @@ import narrate  # noqa: E402
 
 OUT = ROOT / "docs" / "post"
 SOURCE = ROOT / "trips" / "test-hunza"
+REVIEW = ROOT / "eval" / "label-review.html"      # tools/make_label_review.py
+CHART_PAGE = OUT / "_chart.html"                   # written for the recording, then removed
 DAY = "hunza-day"
 PORT = 8799
 W, H = 1280, 720
@@ -83,6 +85,15 @@ SCRIPT = {
                  "When the photo and your voice note disagree, it shows both, and picks neither."),
     "downgrades": ("Answers the model could not back up are downgraded, with the reason kept", None,
                    "Answers the model couldn't back up are downgraded, and the reason is kept."),
+    "measured": ("Measured against labelled photos",
+                 "11 photos × 13 questions, including lakes that aren't glacial. "
+                 "Labels drafted and re-checked by a coding agent.",
+                 "How well does it work? Every answer is scored against labelled photos: glacial "
+                 "lakes, a glacier with no lake, and three lakes that aren't glacial at all."),
+    "chart": ("Five measured versions",
+              "False “no” answers: 18 in v2, 3 by v4. Accuracy 74% to 89%.",
+              "Across five measured versions, asking for evidence first stopped unsupported "
+              "answers. Then the in-view questions cut false no answers from eighteen to three."),
     "photos": ("Your photos, full size", None, "Photos open full size."),
     "share": ("Share one offline page, plus CSV and GeoJSON for researchers",
               "No scripts, no map tiles, no fonts from the web. It opens with the network off.",
@@ -279,6 +290,25 @@ def record(clips) -> tuple[Path, dict]:
         d.finish()
         d.click(page.locator("[data-filter='all']"), 300)
 
+        # How it was measured: the labelled photos, then the five versions.
+        page.goto(REVIEW.as_uri())
+        page.add_style_tag(content="#status,#copy,#fallback{display:none!important}")
+        page.wait_for_function("[...document.images].every((i) => i.complete)")
+        d.scene("measured")
+        page.wait_for_timeout(1200)
+        d.scroll_to(page.locator("#card-attabad"), offset=70, ms=1200)
+        d.move(page.locator("#row-attabad-glacial_setting"))
+        page.wait_for_timeout(1500)
+        d.scroll_to(page.locator("#card-jokulsarlon"), offset=70, ms=1200)
+        d.move(page.locator("#row-jokulsarlon-calving_icebergs"))
+        d.finish()
+        page.goto(CHART_PAGE.as_uri())
+        page.wait_for_function("document.images[0] && document.images[0].complete")
+        d.scene("chart")
+        d.finish()
+        page.goto(f"{url}#/day/{DAY}")
+        page.wait_for_function("[...document.querySelectorAll('.card img.main')].every((i) => i.complete)")
+
         d.scene("photos")
         photo = page.locator(".card img.main").first
         d.scroll_to(photo, offset=120, ms=600)
@@ -380,12 +410,18 @@ def main() -> int:
     tmp.mkdir(exist_ok=True)
     clips = make_voice(tmp)
     print("narration: " + ", ".join(f"{k} {v[1]:.1f}s" for k, v in clips.items()))
+    subprocess.run([sys.executable, str(ROOT / "tools" / "make_label_review.py")], check=True)
+    CHART_PAGE.write_text(
+        "<!doctype html><meta charset='utf-8'><body style='margin:0;background:#fcfcfb;"
+        "display:grid;place-items:center;height:100vh'>"
+        "<img src='09-iterations.png' style='width:94vw' alt='Five measured versions'>", encoding="utf-8")
     httpd = serve()
     try:
         raw, marks = record(clips)
     finally:
         httpd.shutdown()
         shutil.rmtree(ROOT / "trips" / DAY, ignore_errors=True)
+        CHART_PAGE.unlink(missing_ok=True)
     mp4, gif = edit(raw, marks, clips)
     shutil.rmtree(OUT / "_raw", ignore_errors=True)
     shutil.rmtree(tmp, ignore_errors=True)

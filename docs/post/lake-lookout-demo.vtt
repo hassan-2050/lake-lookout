@@ -19,80 +19,102 @@ log, on your own laptop, with no internet.
 In the evening, make a
 day for today's hike,
 
-00:00:20.220 --> 00:00:23.633
+00:00:20.210 --> 00:00:23.623
 and drop in the photos and
 voice notes from your phone.
 
-00:00:23.683 --> 00:00:27.600
+00:00:23.673 --> 00:00:27.591
 This demo uses a test day built
 from Wikimedia photos of Hunza,
 
-00:00:27.650 --> 00:00:29.351
+00:00:27.641 --> 00:00:29.341
 with synthetic voice notes.
 
-00:00:29.820 --> 00:00:31.584
+00:00:29.800 --> 00:00:31.564
 Now press the Process button.
 
-00:00:31.634 --> 00:00:34.086
+00:00:31.614 --> 00:00:34.066
 Gemma 4 runs right here, through Ollama,
 
-00:00:34.136 --> 00:00:39.015
+00:00:34.116 --> 00:00:38.995
 and the app blocks every network connection
 except the one to the local model.
 
-00:00:40.260 --> 00:00:43.439
+00:00:40.220 --> 00:00:43.399
 It transcribes each voice
 note, and reads every photo.
 
-00:00:45.860 --> 00:00:48.874
+00:00:45.820 --> 00:00:48.834
 The result is a field log:
 your route, every stop,
 
-00:00:48.924 --> 00:00:53.092
+00:00:48.884 --> 00:00:53.052
 and a checklist drawn from published
 glacial-lake hazard indicators.
 
-00:00:53.550 --> 00:00:57.854
+00:00:53.520 --> 00:00:57.825
 Every yes or no has to name its evidence:
 what the model saw in the photo,
 
-00:00:57.904 --> 00:00:59.104
+00:00:57.875 --> 00:00:59.075
 or what you said.
 
-00:00:59.380 --> 00:01:02.500
+00:00:59.340 --> 00:01:02.460
 Anything it can't actually
 see is marked as unclear.
 
-00:01:02.550 --> 00:01:03.750
+00:01:02.510 --> 00:01:03.710
 Never a silent no.
 
-00:01:04.110 --> 00:01:08.270
+00:01:04.060 --> 00:01:08.220
 When the photo and your voice note
 disagree, it shows both, and picks neither.
 
-00:01:09.260 --> 00:01:13.377
+00:01:09.180 --> 00:01:13.297
 Answers the model couldn't back up are
 downgraded, and the reason is kept.
 
-00:01:14.710 --> 00:01:16.331
+00:01:15.580 --> 00:01:16.848
+How well does it work?
+
+00:01:16.898 --> 00:01:20.562
+Every answer is scored against
+labelled photos: glacial lakes,
+
+00:01:20.612 --> 00:01:24.625
+a glacier with no lake, and three
+lakes that aren't glacial at all.
+
+00:01:25.120 --> 00:01:26.982
+Across five measured versions,
+
+00:01:27.032 --> 00:01:30.423
+asking for evidence first
+stopped unsupported answers.
+
+00:01:30.473 --> 00:01:34.997
+Then the in-view questions cut false
+no answers from eighteen to three.
+
+00:01:35.510 --> 00:01:37.131
 Photos open full size.
 
-00:01:17.880 --> 00:01:23.640
+00:01:39.030 --> 00:01:44.790
 Then share one page that works offline,
 plus CSV and GeoJSON for researchers.
 
-00:01:24.460 --> 00:01:26.209
+00:01:45.620 --> 00:01:47.369
 And there's a dark mode for the tent.
 
-00:01:26.680 --> 00:01:27.830
+00:01:47.830 --> 00:01:48.980
 Lake Lookout.
 
-00:01:27.880 --> 00:01:30.019
+00:01:49.030 --> 00:01:51.169
 Open weights, no signal needed.
 
-00:01:30.069 --> 00:01:32.209
+00:01:51.219 --> 00:01:53.359
 Field observations, not alerts.
 
-00:01:32.259 --> 00:01:36.285
+00:01:53.409 --> 00:01:57.435
 Even this voice is an open
 model, running on this laptop.

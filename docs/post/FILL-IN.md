@@ -5,14 +5,16 @@
 
 1. ~~GitHub username~~ done: the repo is https://github.com/hassan-2050/lake-lookout and every
    image and demo link in the post points at it.
-2. ~~Video~~ done: https://youtu.be/1rj782juY7c is embedded in the post. If you haven't yet, add
-   the captions in YouTube Studio: Subtitles → Add language (English) →
-   Upload file → **With timing** → `docs/post/lake-lookout-demo.srt`.
+2. **Video: upload the new version.** The demo now has a 'how it was measured' segment
+   (2 min). Upload `docs/post/lake-lookout-demo.mp4` to YouTube as a new video, add the
+   captions (Subtitles → Upload file → **With timing** → `docs/post/lake-lookout-demo.srt`),
+   and send Claude the new link; the post still embeds the old one
+   (https://youtu.be/1rj782juY7c) until then.
 3. ~~Taking it outside~~ written as an honest **dry run** on the Hunza test day.
    After a real walk, replace it with what actually happened (and a screenshot).
-4. **`[LABEL REVIEW ...]`**: review the labels on the review page
-   (https://claude.ai/artifact/1k3NpxB3uWfnFArZQENoiG), then tell Claude; it re-scores
-   and replaces this sentence. This is the last bracket left.
+4. ~~Label review~~ done as a second pass by the coding agent (four labels changed to
+   skip); the post says so. A person can still review: `python tools/make_label_review.py`
+   then open `eval/label-review.html`.
 5. ~~Language note and optional links~~ removed (English only so far).
 6. ~~Live demo~~ on: https://hassan-2050.github.io/lake-lookout/
 7. Set `published: true` (or use DEV's publish button), keep the tags

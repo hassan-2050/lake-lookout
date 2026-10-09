@@ -1,0 +1,252 @@
+<title>Lake Label Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: one column of photo cards; on wide screens the photo sits beside its 13 answers. */
+:root {
+  --bg: #eef3f2; --surface: #ffffff; --ink: #14232a; --muted: #566a70; --line: #d6dfdd;
+  --accent: #0b7a88; --accent-soft: #d8eeef; --accent-ink: #ffffff;
+  --yes: #0f6b59; --yes-bg: #d5efe7; --no: #3a4766; --no-bg: #e1e6f1;
+  --unc: #865f10; --unc-bg: #f4e8cc; --skip: #5e6468; --skip-bg: #e8eaea; --changed: #b04e0c;
+  --display: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1517; --surface: #162024; --ink: #e3ecea; --muted: #97aaad; --line: #28363a;
+    --accent: #45b8c6; --accent-soft: #15383d; --accent-ink: #04191c;
+    --yes: #8fdcc8; --yes-bg: #163a32; --no: #c3cbe0; --no-bg: #252c3d;
+    --unc: #f0cd84; --unc-bg: #3a301d; --skip: #b5bcbf; --skip-bg: #2a3134; --changed: #f2a36c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1517; --surface: #162024; --ink: #e3ecea; --muted: #97aaad; --line: #28363a;
+  --accent: #45b8c6; --accent-soft: #15383d; --accent-ink: #04191c;
+  --yes: #8fdcc8; --yes-bg: #163a32; --no: #c3cbe0; --no-bg: #252c3d;
+  --unc: #f0cd84; --unc-bg: #3a301d; --skip: #b5bcbf; --skip-bg: #2a3134; --changed: #f2a36c;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 120px; }
+h1, h2 { font-family: var(--display); line-height: 1.1; margin: 0; text-wrap: balance; }
+h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: .2px; }
+.lede { color: var(--muted); max-width: 68ch; margin: 8px 0 18px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 0 0 18px; padding: 0; list-style: none; }
+.rules li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: .94rem; min-width: 0; }
+.rules b { font-family: var(--display); font-size: 1.05rem; letter-spacing: .3px; margin-right: 4px; }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  background: var(--bg); border-bottom: 1px solid var(--line); padding-block: 10px; margin-bottom: 18px; }
+.meter { flex: 1 1 220px; height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; min-width: 0; }
+.meter i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.count { font-family: var(--display); font-weight: 600; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.status { color: var(--muted); font-size: .9rem; }
+.status.warn { color: var(--changed); }
+button { font: inherit; cursor: pointer; }
+.btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 9px; padding: 6px 14px; font-weight: 600; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:focus-visible, .seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cards { display: flex; flex-direction: column; gap: 22px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); overflow: hidden; }
+.card.done { border-color: var(--accent); }
+.media { padding: 14px; border-right: 1px solid var(--line); min-width: 0; }
+.media .stick { position: sticky; top: 70px; }
+.media img { width: 100%; border-radius: 9px; display: block; }
+.media h2 { font-size: 1.45rem; margin: 12px 0 4px; }
+.kind { display: inline-block; font-size: .8rem; font-weight: 600; letter-spacing: .4px; text-transform: uppercase; color: var(--accent); }
+.note { color: var(--muted); font-size: .92rem; margin: 6px 0 12px; }
+.answers { padding: 8px 16px 14px; min-width: 0; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; }
+.q { min-width: 0; }
+.q b { font-weight: 600; }
+.q small { display: block; color: var(--muted); font-size: .82rem; line-height: 1.35; }
+.q .tag { font-size: .72rem; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 0 6px; margin-left: 6px; }
+.q .was { display: none; color: var(--changed); font-size: .8rem; font-weight: 600; }
+.row.changed .q .was { display: block; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: block; padding: 4px 9px; font-size: .86rem; font-weight: 600; color: var(--muted); border-left: 1px solid var(--line); cursor: pointer; user-select: none; }
+.seg label:first-child span { border-left: 0; }
+.seg input:checked + span.yes { background: var(--yes-bg); color: var(--yes); }
+.seg input:checked + span.no { background: var(--no-bg); color: var(--no); }
+.seg input:checked + span.unclear { background: var(--unc-bg); color: var(--unc); }
+.seg input:checked + span.skip { background: var(--skip-bg); color: var(--skip); }
+.fallback { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.fallback textarea { width: 100%; min-height: 120px; font: .82rem/1.4 ui-monospace, Consolas, monospace; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+@media (max-width: 760px) {
+  .card { grid-template-columns: minmax(0, 1fr); }
+  .media { border-right: 0; border-bottom: 1px solid var(--line); }
+  .media .stick { position: static; }
+  .row { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .meter i { transition: none; } }
+</style>
+
+<div class="wrap">
+  <h1>Lake label review</h1>
+  <p class="lede">Eleven lake photos, thirteen questions each. My coding agent drafted these answers by looking at each photo.
+    Judge only what the photo itself shows, not what you know about the lake. Change anything you disagree with, then mark the photo as reviewed.
+    Answers save as you go.</p>
+  <ul class="rules">
+    <li><b>yes</b>visible in the photo</li>
+    <li><b>no</b>the relevant area is in view and the feature is absent</li>
+    <li><b>unclear</b>that part is out of view, or can't be judged from this photo</li>
+    <li><b>skip</b>genuinely ambiguous even for a person; not scored</li>
+  </ul>
+  <div class="bar" role="status" aria-live="polite">
+    <span class="count" id="count">0 of 11 reviewed</span>
+    <span class="meter" aria-hidden="true"><i id="meter"></i></span>
+    <span class="status" id="status">Connecting…</span>
+    <button class="btn" id="copy" type="button">Copy answers</button>
+  </div>
+  <div class="cards" id="cards"></div>
+  <section class="fallback" id="fallback" hidden>
+    <p><b>Your answers can't be saved here.</b> Press <b>Copy answers</b> and paste them into the chat with Claude, or copy them from this box.</p>
+    <textarea id="dump" readonly aria-label="Your answers as JSON"></textarea>
+  </section>
+</div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const OPTIONS = ["yes", "no", "unclear", "skip"];
+const KIND = { glacial: "Glacial lake", glacier_no_lake: "Glacier, no lake", not_glacial: "Not glacial (control)" };
+const state = {};            // slug -> { labels, reviewed }
+const draft = {};            // slug -> original labels
+const pending = {}, timers = {}, chains = {};
+let db = null;
+
+const $ = (id) => document.getElementById(id);
+const status = (text, warn) => { const s = $("status"); s.textContent = text; s.classList.toggle("warn", !!warn); };
+
+function build() {
+  const cards = $("cards");
+  for (const p of DATA.photos) {
+    draft[p.slug] = { ...p.labels };
+    state[p.slug] = { labels: { ...p.labels }, reviewed: false };
+    const card = document.createElement("article");
+    card.className = "card"; card.id = "card-" + p.slug;
+    const media = document.createElement("div"); media.className = "media";
+    const stick = document.createElement("div"); stick.className = "stick";
+    const img = document.createElement("img"); img.src = "photos/" + p.slug + ".jpg"; img.alt = "Photo: " + p.slug.replace(/_/g, " ");
+    const kind = document.createElement("span"); kind.className = "kind"; kind.textContent = KIND[p.kind] || p.kind;
+    const h2 = document.createElement("h2"); h2.textContent = p.slug.replace(/_/g, " ");
+    const note = document.createElement("p"); note.className = "note"; note.textContent = p.note;
+    const done = document.createElement("button"); done.type = "button"; done.className = "btn"; done.id = "done-" + p.slug;
+    done.dataset.slug = p.slug; done.dataset.action = "review"; done.textContent = "Mark as reviewed";
+    stick.append(img, kind, h2, note, done); media.append(stick);
+
+    const answers = document.createElement("div"); answers.className = "answers";
+    for (const it of DATA.items) {
+      const row = document.createElement("div"); row.className = "row"; row.id = `row-${p.slug}-${it.id}`;
+      const q = document.createElement("div"); q.className = "q";
+      const b = document.createElement("b"); b.textContent = it.label;
+      if (it.scope) { const t = document.createElement("span"); t.className = "tag"; t.textContent = "in view?"; b.append(t); }
+      const sm = document.createElement("small"); sm.textContent = it.question;
+      const was = document.createElement("span"); was.className = "was"; was.id = `was-${p.slug}-${it.id}`;
+      q.append(b, sm, was);
+      const seg = document.createElement("div"); seg.className = "seg"; seg.setAttribute("role", "radiogroup");
+      seg.setAttribute("aria-label", `${p.slug.replace(/_/g, " ")}: ${it.label}`);
+      for (const opt of OPTIONS) {
+        const lab = document.createElement("label");
+        const input = document.createElement("input"); input.type = "radio";
+        input.name = `${p.slug}__${it.id}`; input.id = `r-${p.slug}-${it.id}-${opt}`; input.value = opt;
+        input.dataset.slug = p.slug; input.dataset.item = it.id;
+        const span = document.createElement("span"); span.className = opt; span.textContent = opt;
+        lab.append(input, span); seg.append(lab);
+      }
+      row.append(q, seg); answers.append(row);
+    }
+    card.append(media, answers); cards.append(card);
+    refresh(p.slug);
+  }
+}
+
+function refresh(slug) {
+  const s = state[slug];
+  for (const it of DATA.items) {
+    const v = s.labels[it.id];
+    const input = $(`r-${slug}-${it.id}-${v}`); if (input) input.checked = true;
+    const changed = v !== draft[slug][it.id];
+    $(`row-${slug}-${it.id}`).classList.toggle("changed", changed);
+    $(`was-${slug}-${it.id}`).textContent = changed ? `changed from draft (was: ${draft[slug][it.id]})` : "";
+  }
+  const btn = $("done-" + slug);
+  btn.textContent = s.reviewed ? "Reviewed ✓" : "Mark as reviewed";
+  btn.classList.toggle("primary", s.reviewed);
+  btn.setAttribute("aria-pressed", String(s.reviewed));
+  $("card-" + slug).classList.toggle("done", s.reviewed);
+  progress();
+}
+
+function progress() {
+  const n = Object.values(state).filter((s) => s.reviewed).length, total = DATA.photos.length;
+  $("count").textContent = `${n} of ${total} reviewed`;
+  $("meter").style.width = `${Math.round(100 * n / total)}%`;
+  $("dump").value = answersJson();
+}
+
+function answersJson() {
+  const out = {};
+  for (const [slug, s] of Object.entries(state)) out[slug] = { reviewed: s.reviewed, labels: s.labels };
+  return JSON.stringify(out);
+}
+
+function save(slug) {
+  if (!db) return;
+  pending[slug] = true;
+  clearTimeout(timers[slug]);
+  timers[slug] = setTimeout(() => {
+    const body = { labels: { ...state[slug].labels }, reviewed: state[slug].reviewed, updated: new Date().toISOString() };
+    status("Saving…");
+    chains[slug] = (chains[slug] || Promise.resolve())
+      .then(() => db.collection("reviews").doc(slug).set(body))
+      .then(() => { pending[slug] = false; status("All changes saved"); })
+      .catch((e) => { pending[slug] = false; status(`Not saved (${e && e.code || "error"}). Use Copy answers.`, true); $("fallback").hidden = false; });
+  }, 500);
+}
+
+document.addEventListener("change", (e) => {
+  const t = e.target;
+  if (!t.matches || !t.matches(".seg input")) return;
+  state[t.dataset.slug].labels[t.dataset.item] = t.value;
+  refresh(t.dataset.slug); save(t.dataset.slug);
+});
+
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("[data-action='review']");
+  if (!t) return;
+  const s = state[t.dataset.slug]; s.reviewed = !s.reviewed;
+  refresh(t.dataset.slug); save(t.dataset.slug);
+});
+
+$("copy").addEventListener("click", () => {
+  const text = answersJson();
+  const fallback = () => { $("fallback").hidden = false; const d = $("dump"); d.value = text; d.focus(); d.select(); status("Selected below: press Ctrl+C to copy"); };
+  try {
+    navigator.clipboard.writeText(text).then(() => status("Copied. Paste it into the chat with Claude."), fallback);
+  } catch { fallback(); }
+});
+
+build();
+
+(async () => {
+  try { db = window.claude && window.claude.use ? await window.claude.use("db") : null; } catch { db = null; }
+  if (!db) { status("Saving isn't available here: use Copy answers when you're done", true); $("fallback").hidden = false; return; }
+  status("Answers save as you go");
+  db.collection("reviews").onSnapshot((snap) => {
+    for (const d of snap.docs) {
+      if (!state[d.id] || pending[d.id]) continue;
+      const v = d.data() || {};
+      state[d.id] = { labels: { ...draft[d.id], ...(v.labels || {}) }, reviewed: !!v.reviewed };
+      refresh(d.id);
+    }
+  }, (e) => { db = null; status(`Saving stopped (${e.code}). Use Copy answers.`, true); $("fallback").hidden = false; });
+})();
+</script>
