@@ -17,7 +17,7 @@ from pathlib import Path
 
 from . import __version__, audio, checklist, gemma, ingest, report
 from .offline import offline
-from .verify import verify
+from .verify import merge, verify
 
 
 def _pick(items: list, n: int) -> list:
@@ -58,13 +58,27 @@ def process_stop(stop: ingest.Stop, *, model: str, cpu: bool, max_photos: int,
         if not photos and not out["transcript"]:
             out["error"] = "voice note had no speech and there is no photo"
             return out
-        media = [gemma.image_b64(p.path) for p in photos]
-        r = gemma.checklist(checklist.prompt(out["transcript"] or None, len(media)),
-                            media, checklist.json_schema(), model=model, cpu=cpu)
-        out["timings"]["checklist"] = r["timings"]
-        out["raw"] = r["raw"]
-        out["checklist"], out["downgrades"] = verify(
-            r["raw"], has_photo=bool(media), has_voice=bool(out["transcript"]))
+        # Photo and voice note are asked about separately and then merged:
+        # given both at once, the model stopped looking at the photo.
+        photo_cl = voice_cl = None
+        out["raw"], out["downgrades"] = {}, []
+        if photos:
+            media = [gemma.image_b64(p.path) for p in photos]
+            r = gemma.checklist(checklist.prompt(None, len(media)), media,
+                                checklist.json_schema(), model=model, cpu=cpu)
+            out["timings"]["checklist_photo"] = r["timings"]
+            out["raw"]["photo"] = r["raw"]
+            photo_cl, down = verify(r["raw"], has_photo=True, has_voice=False)
+            out["downgrades"] += [{**d, "pass": "photo"} for d in down]
+        if out["transcript"]:
+            r = gemma.checklist(checklist.prompt(out["transcript"], 0), [],
+                                checklist.json_schema(), model=model, cpu=cpu)
+            out["timings"]["checklist_voice"] = r["timings"]
+            out["raw"]["voice"] = r["raw"]
+            voice_cl, down = verify(r["raw"], has_photo=False, has_voice=True,
+                                    transcript=out["transcript"])
+            out["downgrades"] += [{**d, "pass": "voice"} for d in down]
+        out["checklist"], out["conflicts"] = merge(photo_cl, voice_cl)
     except (gemma.ModelError, audio.AudioError, OSError) as exc:
         out["error"] = str(exc)
     return out
@@ -120,7 +134,8 @@ def main(argv=None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
     pp = sub.add_parser("process", help="process one day's folder")
     pp.add_argument("folder")
-    pp.add_argument("--model", default=gemma.DEFAULT_MODEL)
+    pp.add_argument("--model", help=f"Ollama model (default {gemma.DEFAULT_MODEL}, "
+                                    f"or {gemma.CPU_MODEL} with --cpu)")
     pp.add_argument("--cpu", action="store_true", help="run the model on CPU only")
     pp.add_argument("--max-photos", type=int, default=3,
                     help="photos sent to the model per stop (default 3)")
@@ -128,4 +143,6 @@ def main(argv=None) -> int:
     pp.add_argument("--dry-run", action="store_true",
                     help="show how files group into stops, without the model")
     args = p.parse_args(argv)
+    if not args.model:
+        args.model = gemma.CPU_MODEL if args.cpu else gemma.DEFAULT_MODEL
     return cmd_process(args)

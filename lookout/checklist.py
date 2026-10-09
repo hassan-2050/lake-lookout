@@ -29,6 +29,9 @@ class Item:
     # Id of a scope item that must be "yes" before this item can be judged
     # from a photo. Absence can only be claimed for what is in view.
     needs: str | None = None
+    # Words at least one of which must appear in evidence quoted from the voice
+    # note, so one sentence cannot be recycled as evidence for every question.
+    keywords: tuple[str, ...] = ()
 
 
 DAM = "dam_in_view"
@@ -38,48 +41,61 @@ DOWNSTREAM = "downstream_in_view"
 # before the items that depend on it.
 ITEMS: tuple[Item, ...] = (
     Item("water_body", "Water body",
-         "Is a lake, pond or river visible, or described in the voice note?"),
+         "Is a lake, pond or river visible, or described in the voice note?",
+         keywords=('lake', 'pond', 'tarn', 'pool', 'water', 'river', 'stream', 'lagoon')),
     Item("glacial_setting", "Glacial setting",
          "Is this a glacial setting, with glacier ice or bare moraine ridges in "
          "view? Milky or turquoise water alone is not enough: rivers carry that "
-         "colour far from any glacier."),
+         "colour far from any glacier.",
+         keywords=('glacier', 'ice', 'moraine', 'ridge', 'snout', 'debris')),
     Item("glacier_contact", "Glacier touches water",
          "Does glacier ice touch the water, or end very close to it?",
-         "Rounce et al. 2016, HESS 20:3455 (mother glacier within 600 m)"),
+         "Rounce et al. 2016, HESS 20:3455 (mother glacier within 600 m)",
+         keywords=('glacier', 'ice')),
     Item("calving_icebergs", "Icebergs or calving",
          "Are there icebergs on the water, or ice cliffs breaking into it?",
-         "Sakai et al. 2009 (calving onset)"),
+         "Sakai et al. 2009 (calving onset)",
+         keywords=('iceberg', 'berg', 'calv', 'ice')),
     Item("steep_slopes_above", "Steep slopes or hanging ice above",
          "Do steep rock walls or hanging ice rise directly from the lake shore, "
          "close enough for falling rock or ice to reach the water? Distant "
          "mountains in the background do not count.",
-         "Fujita et al. 2013, NHESS 13:1827; Rounce et al. 2016, HESS 20:3455"),
+         "Fujita et al. 2013, NHESS 13:1827; Rounce et al. 2016, HESS 20:3455",
+         keywords=('steep', 'cliff', 'wall', 'hanging', 'slope', 'face', 'ice')),
     Item("fresh_scars_above", "Fresh rockfall scars above",
          "Are there fresh rockfall or landslide scars on the slopes directly "
          "above the lake?",
-         "Allen et al. 2019 (impulse-wave trigger)"),
+         "Allen et al. 2019 (impulse-wave trigger)",
+         keywords=('rockfall', 'rock fall', 'landslide', 'scar', 'slide', 'fallen', 'rubble', 'collapse')),
     Item(DAM, "Dam or outlet in view",
          "Can you see the end of the lake where water flows out, and the ridge "
-         "or dam at that end?"),
+         "or dam at that end?",
+         keywords=('outlet', 'dam', 'end', 'ridge', 'outflow', 'spill', 'overflow')),
     Item("moraine_dam", "Moraine dam",
          "Is the water held back by a ridge of loose rock and debris (a moraine "
-         "dam) rather than solid bedrock?", needs=DAM),
+         "dam) rather than solid bedrock?", needs=DAM,
+         keywords=('moraine', 'ridge', 'loose', 'rock', 'debris', 'dam', 'boulder', 'gravel')),
     Item("low_freeboard", "Low freeboard",
          "Does the top of the dam sit only a little above the water level?",
-         "Mergili & Schneider 2011 (freeboard)", needs=DAM),
+         "Mergili & Schneider 2011 (freeboard)", needs=DAM,
+         keywords=('crest', 'top', 'dam', 'level', 'brim', 'rim', 'freeboard')),
     Item("steep_dam_face", "Steep dam face",
          "Is the downstream (outer) face of the dam steep?",
          "Lv et al. 1999 (moderate confidence; not independently verified)",
-         needs=DAM),
+         needs=DAM,
+         keywords=('steep', 'face', 'dam', 'slope', 'outer')),
     Item("seepage_breach", "Seepage or breach",
          "Is water seeping out through the dam face, or is there a breach "
-         "channel cut through it?", needs=DAM),
+         "channel cut through it?", needs=DAM,
+         keywords=('seep', 'breach', 'leak', 'trickl', 'spring', 'wet', 'channel', 'flowing out', 'cut')),
     Item(DOWNSTREAM, "Downstream in view",
          "Can you see the land below the lake's outlet, where water flowing "
-         "out of the lake would go?"),
+         "out of the lake would go?",
+         keywords=('below', 'downstream', 'valley', 'outlet', 'down')),
     Item("downstream_people", "People or structures downstream",
          "Are trails, houses, bridges or fields visible downstream of the "
-         "water?", needs=DOWNSTREAM),
+         "water?", needs=DOWNSTREAM,
+         keywords=('trail', 'path', 'house', 'lodge', 'village', 'bridge', 'field', 'people', 'hut', 'building', 'road', 'teahouse', 'farm', 'school')),
 )
 
 ITEM_IDS = tuple(i.id for i in ITEMS)
@@ -137,7 +153,8 @@ def prompt(transcript: str | None, n_photos: int) -> str:
         "view: if the photo does not show what is downstream of the water, "
         "downstream questions are unclear.",
         "- Anything the hiker describes in the voice note counts as evidence, "
-        "with source voice.",
+        "with source voice. Quote their words, and use a sentence only for "
+        "the questions it is actually about.",
         "- Do not judge whether the lake is dangerous. Only record what is "
         "observed.",
         "",

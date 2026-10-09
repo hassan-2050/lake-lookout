@@ -24,7 +24,10 @@ import urllib.request
 
 from PIL import Image, ImageOps
 
+# Chosen by eval/run_eval.py: e4b made the fewest false "no" answers in every
+# run; e2b is about 1.5x faster and is the default when running on CPU only.
 DEFAULT_MODEL = "gemma4:e4b"
+CPU_MODEL = "gemma4:e2b"
 BASE_URL = os.environ.get("LOOKOUT_OLLAMA", "http://127.0.0.1:11434")
 SEED = 20261010
 MAX_IMAGE_SIDE = 1024

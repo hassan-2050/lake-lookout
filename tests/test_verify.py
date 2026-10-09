@@ -1,5 +1,5 @@
 from lookout.checklist import ITEM_IDS, json_schema, prompt
-from lookout.verify import verify
+from lookout.verify import merge, verify
 
 
 def _raw(**over):
@@ -99,6 +99,98 @@ def test_downstream_needs_downstream_in_view():
                                   "source": "photo"})
     checked, _ = verify(raw, has_photo=True, has_voice=False)
     assert checked["downstream_people"]["answer"] == "unclear"
+
+
+GOKYO = ("Third Gokyo lake. The water is bright turquoise. On the left there is a "
+         "long ridge of loose rock between the lake and the glacier.")
+
+
+def test_one_voice_sentence_cannot_answer_unrelated_questions():
+    """Seen in the synthetic day: the rock-ridge sentence 'proved' no seepage."""
+    ridge = "long ridge of loose rock between the lake and the glacier"
+    raw = _raw(moraine_dam={"answer": "yes", "evidence": ridge, "source": "voice"},
+               fresh_scars_above={"answer": "no", "evidence": ridge, "source": "voice"})
+    checked, down = verify(raw, has_photo=True, has_voice=True, transcript=GOKYO)
+    assert checked["moraine_dam"]["answer"] == "yes"
+    assert checked["fresh_scars_above"]["answer"] == "unclear"
+    assert "not about this question" in down[0]["reason"]
+
+
+def test_voice_evidence_must_be_in_the_transcript():
+    raw = _raw(calving_icebergs={"answer": "yes", "evidence": "icebergs drifting by the shore",
+                                 "source": "voice"})
+    checked, down = verify(raw, has_photo=True, has_voice=True, transcript=GOKYO)
+    assert checked["calving_icebergs"]["answer"] == "unclear"
+    assert "not in the transcript" in down[0]["reason"]
+
+
+def test_cannot_see_is_unclear_not_no():
+    raw = _raw(downstream_people={"answer": "no", "source": "voice",
+                                  "evidence": "I can't see the far end of the lake from here"})
+    checked, _ = verify(raw, has_photo=True, has_voice=True,
+                        transcript="I can't see the far end of the lake from here.")
+    assert checked["downstream_people"]["answer"] == "unclear"
+
+
+def test_both_as_a_source_does_not_bypass_the_view_check():
+    raw = _raw(seepage_breach={"answer": "no", "evidence": "no seepage at the dam",
+                               "source": "both"})
+    checked, _ = verify(raw, has_photo=True, has_voice=True, transcript="a lake")
+    assert checked["seepage_breach"]["answer"] == "unclear"
+
+
+def test_curly_apostrophe_in_cannot_see_is_caught():
+    raw = _raw(downstream_people={"answer": "no", "source": "voice",
+                                  "evidence": "I can’t see the far end of the lake"})
+    checked, _ = verify(raw, has_photo=False, has_voice=True,
+                        transcript="I can’t see the far end of the lake")
+    assert checked["downstream_people"]["answer"] == "unclear"
+
+
+def test_cannot_see_answers_the_in_view_questions():
+    raw = _raw(dam_in_view={"answer": "no", "source": "voice",
+                            "evidence": "I can't see the far end of the lake"})
+    checked, _ = verify(raw, has_photo=False, has_voice=True,
+                        transcript="I can't see the far end of the lake from here")
+    assert checked["dam_in_view"]["answer"] == "no"
+
+
+def _a(answer, evidence="x", source="photo"):
+    return {"answer": answer, "evidence": evidence, "source": source}
+
+
+def _cl(**items):
+    base = {i: _a("unclear", "", "none") for i in ITEM_IDS}
+    base.update(items)
+    base["summary"] = "s"
+    return base
+
+
+def test_merge_fills_gaps_and_marks_agreement():
+    photo = _cl(water_body=_a("yes", "lake"), steep_slopes_above=_a("yes", "cliffs"))
+    voice = _cl(water_body=_a("yes", "a lake", "voice"),
+                moraine_dam=_a("yes", "loose ridge", "voice"))
+    merged, conflicts = merge(photo, voice)
+    assert merged["water_body"]["source"] == "both"
+    assert merged["steep_slopes_above"]["answer"] == "yes"
+    assert merged["moraine_dam"]["source"] == "voice"
+    assert conflicts == []
+
+
+def test_merge_never_picks_a_side_in_a_disagreement():
+    photo = _cl(calving_icebergs=_a("no", "clear water surface"))
+    voice = _cl(calving_icebergs=_a("yes", "icebergs by the far shore", "voice"))
+    merged, conflicts = merge(photo, voice)
+    assert merged["calving_icebergs"]["answer"] == "unclear"
+    assert "photo says no" in merged["calving_icebergs"]["evidence"]
+    assert "hiker says yes" in merged["calving_icebergs"]["evidence"]
+    assert conflicts == [{"item": "calving_icebergs", "photo": "no", "voice": "yes"}]
+
+
+def test_merge_with_one_source_returns_it():
+    photo = _cl(water_body=_a("yes", "lake"))
+    assert merge(photo, None) == (photo, [])
+    assert merge(None, photo) == (photo, [])
 
 
 def test_schema_puts_evidence_before_answer():

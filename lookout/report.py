@@ -66,6 +66,7 @@ def _flat(stop: dict) -> dict:
         row[f"{item}_evidence"] = a.get("evidence", "")
         row[f"{item}_source"] = a.get("source", "")
     row["downgrades"] = len(stop.get("downgrades") or [])
+    row["conflicts"] = ";".join(c["item"] for c in stop.get("conflicts") or [])
     row["error"] = stop.get("error") or ""
     return row
 
@@ -150,10 +151,12 @@ def _card(stop: dict, thumbs: list[str]) -> str:
     cl = stop["checklist"]
     if cl.get("summary"):
         out.append(f'<p class="summary">{_esc(cl["summary"])}</p>')
+    conflicted = {c["item"] for c in stop.get("conflicts") or []}
     rows = []
     for item in ITEMS:
         a = cl.get(item.id) or {}
-        ev = _esc(a.get("evidence", "")) if a.get("answer") != "unclear" else ""
+        shown = a.get("answer") != "unclear" or item.id in conflicted
+        ev = _esc(a.get("evidence", "")) if shown else ""
         src = _esc(a.get("source", "")) if a.get("answer") != "unclear" else ""
         rows.append(f'<tr><th scope="row">{_esc(item.label)}'
                     f'<small>{_esc(item.source)}</small></th>'
@@ -161,6 +164,10 @@ def _card(stop: dict, thumbs: list[str]) -> str:
                     f'{f" <em>({src})</em>" if src else ""}</td></tr>')
     out.append('<table><thead><tr><th>Observation</th><th>Answer</th>'
                '<th>Evidence</th></tr></thead><tbody>' + "".join(rows) + "</tbody></table>")
+    if conflicted:
+        names = ", ".join(BY_ID[i].label for i in ITEM_IDS if i in conflicted)
+        out.append(f'<p class="conflict">The photo and the hiker disagree on: '
+                   f'{_esc(names)}. Both are shown above; neither is picked.</p>')
     if stop.get("downgrades"):
         items = "".join(
             f'<li>{_esc(BY_ID[d["item"]].label)}: model said '
@@ -200,7 +207,7 @@ td em{color:var(--muted)}.chip{display:inline-block;min-width:64px;text-align:ce
 border-radius:999px;padding:1px 8px;font-weight:600;font-size:.82rem}
 .chip.yes{background:var(--yesbg);color:var(--yes)}.chip.no{background:var(--nobg);color:var(--no)}
 .chip.unclear,.chip.none{background:var(--uncbg);color:var(--unc)}
-.error{color:var(--err);font-weight:600}details{margin-top:10px;color:var(--muted);font-size:.9rem}
+.error{color:var(--err);font-weight:600}.conflict{color:var(--unc);font-weight:600}details{margin-top:10px;color:var(--muted);font-size:.9rem}
 footer{color:var(--muted);font-size:.85rem;margin-top:32px;border-top:1px solid var(--line);padding-top:12px}
 @media (max-width:560px){.thumbs img{height:130px}th small{display:none}}
 """
